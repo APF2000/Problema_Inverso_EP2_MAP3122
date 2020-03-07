@@ -55,7 +55,7 @@ def multiplicacaoMatrizes(matrizA,matrizB): # C = A*B
                     soma = soma + matrizA[i][k]*matrizB[k][j]
                 C[i][j] = soma
     return C
-        
+
 
 
 # In[5]:
@@ -86,15 +86,28 @@ def multiplicacaoRealMatriz(matrizA,alfa):
 
 # In[7]:
 
+#import pdb; pdb.set_trace()
 
 A = criarMatriz(2,2)
 B = criarMatriz(2,2)
 B[0][1] = 0
 B[1][0] = 0
-print(B)
-print(A)
+#print(B) - usar print(B) no debugger
+#print(A)
 C = multiplicacaoMatrizes(A,B)
-print(C)
+#print(C)
 C = multiplicacaoRealMatriz(C,2)
-print(C)
+#print(C)
 
+D = criarMatriz(3,2)
+D[0] = [1, 2]
+D[1] = [2, 4]
+D[2] = [3, 5]
+
+E = criarMatriz(2,3)
+E[0] = [1, 0.5, 1/3]
+E[1] = [1, 1/3, 0.5]
+
+
+F = multiplicacaoMatrizes(D, E)
+print(F) # esse aqui já e bem necessário
