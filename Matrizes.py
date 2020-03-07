@@ -86,7 +86,7 @@ def multiplicacaoRealMatriz(matrizA,alfa):
 
 # In[7]:
 
-import pdb; pdb.set_trace()
+#import pdb; pdb.set_trace() em caso de acidentes
 
 A = criarMatriz(2,2)
 B = criarMatriz(2,2)
