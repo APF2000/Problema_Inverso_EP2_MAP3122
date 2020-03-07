@@ -5,7 +5,7 @@
 
 
 import numpy as np
-import matplotlib.pyplot as plt
+#import matplotlib.pyplot as plt - não precisa disso agora
 
 
 # In[2]:
@@ -86,7 +86,7 @@ def multiplicacaoRealMatriz(matrizA,alfa):
 
 # In[7]:
 
-#import pdb; pdb.set_trace()
+import pdb; pdb.set_trace()
 
 A = criarMatriz(2,2)
 B = criarMatriz(2,2)
@@ -108,6 +108,8 @@ E = criarMatriz(2,3)
 E[0] = [1, 0.5, 1/3]
 E[1] = [1, 1/3, 0.5]
 
+C = somaMatrizes(A, B)
 
 F = multiplicacaoMatrizes(D, E)
+F = transpostaMatriz(F)
 print(F) # esse aqui já e bem necessário
