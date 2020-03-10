@@ -13,7 +13,7 @@ import numpy as np
 
 def criarMatriz(num_linhas,num_colunas):
     dimensoes = [num_linhas,num_colunas]
-    matriz = np.ones(dimensoes)
+    matriz = np.zeros(dimensoes)
     return matriz
 
 

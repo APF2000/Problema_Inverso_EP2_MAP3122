@@ -5,10 +5,8 @@ import math
 
 EPS = 10e-10
 
-def funcaoF(t, x):
-    betha2 = 10 ** 2
-    xc = 0.7
-    c2 = 10
+def funcaoF(t, x, betha2, xc, c2):
+
     pi2 = (np.pi) ** 2
 
     if np.absolute(x - xc) < EPS:
@@ -20,4 +18,14 @@ def funcaoF(t, x):
 
     return aux1 * aux2 * aux3
 
-def EDO(u, f):
+
+def EDO(x, t, T, nt, deltaX, betha2, ut0, ut1):
+    if np.absolute(x) < EPS or np.absolute(1 - x) < EPS:
+        return 0
+
+    valores = m.criarMatriz(num_linhas, num_colunas)
+
+
+betha2 = 10 ** 2
+xc = 0.7
+c2 = 10
