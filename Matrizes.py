@@ -88,28 +88,28 @@ def multiplicacaoRealMatriz(matrizA,alfa):
 
 #import pdb; pdb.set_trace() em caso de acidentes
 
-A = criarMatriz(2,2)
-B = criarMatriz(2,2)
-B[0][1] = 0
-B[1][0] = 0
-#print(B) - usar print(B) no debugger
+# A = criarMatriz(2,2)
+# B = criarMatriz(2,2)
+#print(B) -B[0][1] = 0
+# B[1][0] = 0
+ # usar print(B) no debugger
 #print(A)
-C = multiplicacaoMatrizes(A,B)
+# C = multiplicacaoMatrizes(A,B)
 #print(C)
-C = multiplicacaoRealMatriz(C,2)
+# C = multiplicacaoRealMatriz(C,2)
 #print(C)
-
-D = criarMatriz(3,2)
-D[0] = [1, 2]
-D[1] = [2, 4]
-D[2] = [3, 5]
-
-E = criarMatriz(2,3)
-E[0] = [1, 0.5, 1/3]
-E[1] = [1, 1/3, 0.5]
-
-C = somaMatrizes(A, B)
-
-F = multiplicacaoMatrizes(D, E)
-F = transpostaMatriz(F)
-print(F) # esse aqui já e bem necessário
+#
+# D = criarMatriz(3,2)
+# D[0] = [1, 2]
+# D[1] = [2, 4]
+# D[2] = [3, 5]
+#
+# E = criarMatriz(2,3)
+# E[0] = [1, 0.5, 1/3]
+# E[1] = [1, 1/3, 0.5]
+#
+# C = somaMatrizes(A, B)
+#
+# F = multiplicacaoMatrizes(D, E)
+# F = transpostaMatriz(F)
+# print(F) # esse aqui já e bem necessário
