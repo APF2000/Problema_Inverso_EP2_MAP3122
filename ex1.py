@@ -19,15 +19,19 @@ def funcaoF(t, x, betha2, xc, c2):
     return aux1 * aux2 * aux3
 
 # Solucao de u(ti, xj) para os parâmetros dados
-def EDO(**params, i, j):
+def EDO(i, j, **params):
     # params = (x, t, T, nt, deltaX, deltaT, betha2, ut0, ut1)
 
-    if j = 0 :
+    if j == 0 :
         return 0
 
+    T = params['T']
+    nt = params['nt']
+    deltaT = T / nt
 
-    deltaT = params['deltaT']
     deltaX = params['deltaX']
+    nx = 1 / deltaX # Definicao de deltaX
+
     betha2 = params['betha2']
     xc = params['xc']
     c2 = params['c2']
@@ -39,15 +43,19 @@ def EDO(**params, i, j):
     if np.absolute(xj) < EPS or np.absolute(1 - xj) < EPS:
         return 0
 
-    alpha = c * deltaT/deltaX
-    nx = 1 / deltaX # Definicao de deltaX
+    if j == 0 or j == nx :
+        return 0
 
-    term1 = -EDO(**params, i-1, j)
-    term2 = 2 * (1 - alpha**2) * EDO(**params, i, j)
-    term3A = EDO(**params, i, j+1)
-    term3B = EDO(**params, i, j-1)
+    alpha = c * deltaT/deltaX
+
+    term1 = -EDO( i-1, j, **params)
+    term2 = 2 * (1 - alpha**2) * EDO(i, j, **params)
+    term3A = EDO(i, j+1, **params)
+    term3B = EDO(i, j-1, **params)
     term3 = (alpha**2) * (term3A + term3B)
     term4 = (deltaT**2) * funcaoF(ti, xj, betha2, xc, c2)
+
+    return term1 + term2 + term3 + term4
 
     # valores = m.criarMatriz(nt, nx)
 #
@@ -67,4 +75,5 @@ T = 1
 nt = 350 #inicial
 deltaX = 0.01
 
-print(EDO(deltaT=deltaT, deltaX=deltaX, c2=c2, xc=xc, T=T, nt=nt, i=2, j=3))
+
+print(EDO(nt=nt, betha2=betha2, deltaX=deltaX, c2=c2, xc=xc, T=T, i=2, j=3))
