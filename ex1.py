@@ -25,6 +25,8 @@ def EDO(i, j, **params):
     if j == 0 :
         return 0
 
+    #import pdb; pdb.set_trace()
+
     T = params['T']
     nt = params['nt']
     deltaT = T / nt
@@ -43,17 +45,17 @@ def EDO(i, j, **params):
     if np.absolute(xj) < EPS or np.absolute(1 - xj) < EPS:
         return 0
 
-    if j == 0 or j == nx :
+    if j == 0 or j == nx or i <= 1 :
         return 0
 
     alpha = c * deltaT/deltaX
 
-    term1 = -EDO( i-1, j, **params)
-    term2 = 2 * (1 - alpha**2) * EDO(i, j, **params)
-    term3A = EDO(i, j+1, **params)
-    term3B = EDO(i, j-1, **params)
-    term3 = (alpha**2) * (term3A + term3B)
-    term4 = (deltaT**2) * funcaoF(ti, xj, betha2, xc, c2)
+    term1  = -EDO(i-2, j, **params)
+    term2  = 2 * (1 - alpha**2) * EDO(i-1, j, **params)
+    term3A = EDO(i-1, j+1, **params)
+    term3B = EDO(i-1, j-1, **params)
+    term3  = (alpha**2) * (term3A + term3B)
+    term4  = (deltaT**2) * funcaoF(ti, xj, betha2, xc, c2)
 
     return term1 + term2 + term3 + term4
 
