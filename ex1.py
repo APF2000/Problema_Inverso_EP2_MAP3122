@@ -19,23 +19,52 @@ def funcaoF(t, x, betha2, xc, c2):
     return aux1 * aux2 * aux3
 
 # Solucao de u(ti, xj) para os parâmetros dados
-def EDO(x, t, T, nt, deltaX, deltaT, betha2, ut0, ut1, i, j):
-    if np.absolute(x) < EPS or np.absolute(1 - x) < EPS:
+def EDO(**params, i, j):
+    # params = (x, t, T, nt, deltaX, deltaT, betha2, ut0, ut1)
+
+    if j = 0 :
         return 0
 
-    valores = m.criarMatriz(num_linhas, num_colunas)
-    valores
 
+    deltaT = params['deltaT']
+    deltaX = params['deltaX']
+    betha2 = params['betha2']
+    xc = params['xc']
+    c2 = params['c2']
+    c = math.sqrt(c2)
+
+    ti = i * deltaT
+    xj = j * deltaX
+
+    if np.absolute(xj) < EPS or np.absolute(1 - xj) < EPS:
+        return 0
+
+    alpha = c * deltaT/deltaX
     nx = 1 / deltaX # Definicao de deltaX
 
-    for it1 in range(nt):
-        for it2 in range(nx):
-            pass
+    term1 = -EDO(**params, i-1, j)
+    term2 = 2 * (1 - alpha**2) * EDO(**params, i, j)
+    term3A = EDO(**params, i, j+1)
+    term3B = EDO(**params, i, j-1)
+    term3 = (alpha**2) * (term3A + term3B)
+    term4 = (deltaT**2) * funcaoF(ti, xj, betha2, xc, c2)
 
-
+    # valores = m.criarMatriz(nt, nx)
+#
+    # Se j = 0 e i = 1 ou 0, entao uij = 0
+# valores[0][0] = 0 # u(i=0, j=0) = u(t0, x0)
+    # valores[1][0] = 0 # u(i=1, j=0) = u(t1, x0)
+    # valores[0][1] = "naosei"# u(i=0, j=1) = u(t0, x1)
+    # valores[1][1] = "tambemnao"# u(i=1, j=1) = u(t1, x1)
+#
+    # for it1 in range(nt):
+        # if(it1 > 1):
+            #
 betha2 = 10 ** 2
 xc = 0.7
 c2 = 10
 T = 1
 nt = 350 #inicial
 deltaX = 0.01
+
+print(EDO(deltaT=deltaT, deltaX=deltaX, c2=c2, xc=xc, T=T, nt=nt, i=2, j=3))
