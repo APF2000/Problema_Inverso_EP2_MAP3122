@@ -39,8 +39,8 @@ def EDO(i, j, **params):
     ti = i * deltaT
     xj = j * deltaX
 
-    if np.absolute(xj) < EPS or np.absolute(1 - xj) < EPS:
-        return 0
+    #if np.absolute(xj) < EPS or np.absolute(1 - xj) < EPS:
+    #    return 0
 
     if j == 0 or j == nx or i <= 1 :
         return 0
