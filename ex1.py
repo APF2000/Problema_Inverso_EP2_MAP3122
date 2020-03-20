@@ -9,7 +9,7 @@ def funcaoF(t, x, betha2, xc, c2):
 
     pi2 = (np.pi) ** 2
 
-    if np.absolute(x - xc) < EPS:
+    if np.absolute(x - xc) > EPS:
         return 0
 
     aux1 = 1000 * c2
@@ -21,9 +21,6 @@ def funcaoF(t, x, betha2, xc, c2):
 # Solucao de u(ti, xj) para os parâmetros dados
 def EDO(i, j, **params):
     # params = (x, t, T, nt, deltaX, deltaT, betha2, ut0, ut1)
-
-    if j == 0 :
-        return 0
 
     #import pdb; pdb.set_trace()
 
