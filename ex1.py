@@ -24,37 +24,47 @@ def EDO(i, j, **params):
 
     #import pdb; pdb.set_trace()
 
+    firstTime = params['firstTime']
     T = params['T']
     nt = params['nt']
-    deltaT = T / nt
-
     deltaX = params['deltaX']
-    nx = 1 / deltaX # Definicao de deltaX
-
     betha2 = params['betha2']
     xc = params['xc']
     c2 = params['c2']
-    c = math.sqrt(c2)
 
-    ti = i * deltaT
-    xj = j * deltaX
+    if firstTime :
+        params['firstTime'] = False
+        deltaT = T / nt; params['deltaT'] = deltaT
+        nx = 1 / deltaX; params['nx'] = nx # Definicao de deltaX
+        c = math.sqrt(c2); params['c'] = c
+
+    ti = i * params['deltaT']
+    xj = j * params['deltaX']
 
     #if np.absolute(xj) < EPS or np.absolute(1 - xj) < EPS:
     #    return 0
+    matrix = params['matrix']
 
-    if j == 0 or j == nx or i <= 1 :
-        return 0
+    if j == 0 or j == params['nx'] or i <= 1 :
+        if matrix[i][j] == 'a':
+            matrix[i][j] = 0
+            params['matrix'] = matrix
+        return 0, matrix
 
     alpha = c * deltaT/deltaX
 
-    term1  = -EDO(i-2, j, **params)
-    term2  = 2 * (1 - alpha**2) * EDO(i-1, j, **params)
-    term3A = EDO(i-1, j+1, **params)
-    term3B = EDO(i-1, j-1, **params)
+    term1  = -EDO(i-2, j, **params)[0]
+    term2  = 2 * (1 - alpha**2) * EDO(i-1, j, **params)[0]
+    term3A = EDO(i-1, j+1, **params)[0]
+    term3B = EDO(i-1, j-1, **params)[0]
     term3  = (alpha**2) * (term3A + term3B)
     term4  = (deltaT**2) * funcaoF(ti, xj, betha2, xc, c2)
 
-    return term1 + term2 + term3 + term4
+    print("term4 = {:.2f}".format(term4))
+    sum = term1 + term2 + term3 + term4
+    if matrix[i][j] == 'a':
+        matrix[i][j] = sum
+    return sum, matrix
 
     # valores = m.criarMatriz(nt, nx)
 #
@@ -74,5 +84,9 @@ T = 1
 nt = 350 #inicial
 deltaX = 0.01
 
+#import pdb; pdb.set_trace()
 
-print(EDO(nt=nt, betha2=betha2, deltaX=deltaX, c2=c2, xc=xc, T=T, i=2, j=3))
+M = m.criarMatriz(10, 10, fill='a')
+
+
+print(EDO(nt=nt, betha2=betha2, deltaX=deltaX, c2=c2, xc=xc, T=T, i=2, j=3, matrix=M, firstTime=True))
