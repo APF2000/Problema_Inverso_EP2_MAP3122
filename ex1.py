@@ -72,12 +72,34 @@ def EDO(i, j, **params):
         return 0, matrix
 
     alpha = params['c'] * params['deltaT']/deltaX
+#Primeira EDO calculada
+    if(matriz[i-2][j] != 'a'):
+        edo1 = matriz[i-2][j]
+    else:
+        edo1 = EDO(i-2,j,**params)[0]
 
+#Segunda EDO calculada
+    if(matriz[i-1][j] != 'a'):
+        edo2 = matriz[i-1][j]
+    else:
+        edo2 = EDO(i-1,j,**params)[0]
 
-    term1  = -EDO(i-2, j, **params)[0]
-    term2  = 2 * (1 - alpha**2) * EDO(i-1, j, **params)[0]
-    term3A = EDO(i-1, j+1, **params)[0]
-    term3B = EDO(i-1, j-1, **params)[0]
+#Terceira EDO calculada
+    if(matriz[i-1][j+1] != 'a'):
+        edo3 = matriz[i-1][j+1]
+    else:
+        edo3 = EDO(i-1,j+1,**params)[0]
+
+#Quarta EDO calculada
+    if(matriz[i-1][j-1] != 'a'):
+        edo4 = matriz[i-1][j-1]
+    else:
+        edo4 = EDO(i-1,j-1,**params)[0]
+
+    term1  = -edo1
+    term2  = 2 * (1 - alpha**2) * edo2
+    term3A = edo3
+    term3B = edo4
     term3  = (alpha**2) * (term3A + term3B)
     term4  = (params['deltaT'] **2) * funcaoF(ti, xj, c2)
 
