@@ -5,7 +5,10 @@ import math
 
 EPS = 10e-10
 
-def funcaoF(t, x, betha2, xc, c2):
+def funcaoF(t, x, c2):
+
+    betha2 = 10 ** 2
+    xc = 0.7
 
     pi2 = (np.pi) ** 2
 
@@ -18,18 +21,31 @@ def funcaoF(t, x, betha2, xc, c2):
 
     return aux1 * aux2 * aux3
 
+def criarMatrizBordas(nt, nx, fill):
+    matrix = m.criarMatriz(nt, nx+1, fill='a')
+
+    for i in range(nx):
+        matrix[0][i] = 0
+        matrix[1][i] = 0
+
+    for i in range(nt):
+        matrix[i][0] = 0
+        matrix[i][nx] = 0
+
+    return matrix
+
 # Solucao de u(ti, xj) para os parâmetros dados
 def EDO(i, j, **params):
     # params = (x, t, T, nt, deltaX, deltaT, betha2, ut0, ut1)
 
-    #import pdb; pdb.set_trace()
+    import pdb; pdb.set_trace()
 
     firstTime = params['firstTime']
     T = params['T']
     nt = params['nt']
     deltaX = params['deltaX']
-    betha2 = params['betha2']
-    xc = params['xc']
+    #betha2 = params['betha2']
+    #xc = params['xc']
     c2 = params['c2']
 
     if firstTime :
@@ -38,27 +54,32 @@ def EDO(i, j, **params):
         nx = 1 / deltaX; params['nx'] = nx # Definicao de deltaX
         c = math.sqrt(c2); params['c'] = c
 
+        matrix = criarMatrizBordas(int(nt), int(nx), fill='a')
+    else :
+        matrix = params['matrix']
+
     ti = i * params['deltaT']
     xj = j * params['deltaX']
 
     #if np.absolute(xj) < EPS or np.absolute(1 - xj) < EPS:
     #    return 0
-    matrix = params['matrix']
+    params['matrix'] = matrix
 
-    if j == 0 or j == params['nx'] or i <= 1 :
+    if j == 0 or j == params['nx'] or i <= 1:
         if matrix[i][j] == 'a':
             matrix[i][j] = 0
             params['matrix'] = matrix
         return 0, matrix
 
-    alpha = c * deltaT/deltaX
+    alpha = params['c'] * params['deltaT']/deltaX
+
 
     term1  = -EDO(i-2, j, **params)[0]
     term2  = 2 * (1 - alpha**2) * EDO(i-1, j, **params)[0]
     term3A = EDO(i-1, j+1, **params)[0]
     term3B = EDO(i-1, j-1, **params)[0]
     term3  = (alpha**2) * (term3A + term3B)
-    term4  = (deltaT**2) * funcaoF(ti, xj, betha2, xc, c2)
+    term4  = (params['deltaT'] **2) * funcaoF(ti, xj, c2)
 
     print("term4 = {:.2f}".format(term4))
     sum = term1 + term2 + term3 + term4
@@ -77,16 +98,10 @@ def EDO(i, j, **params):
     # for it1 in range(nt):
         # if(it1 > 1):
             #
-betha2 = 10 ** 2
-xc = 0.7
+
 c2 = 10
 T = 1
 nt = 350 #inicial
 deltaX = 0.01
 
-#import pdb; pdb.set_trace()
-
-M = m.criarMatriz(10, 10, fill='a')
-
-
-print(EDO(nt=nt, betha2=betha2, deltaX=deltaX, c2=c2, xc=xc, T=T, i=2, j=3, matrix=M, firstTime=True))
+print(EDO(nt=nt, deltaX=deltaX, c2=c2, T=T, i=10, j=10, firstTime=True))
