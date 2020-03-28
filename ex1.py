@@ -1,6 +1,6 @@
 import numpy as np
 import Matrizes as m
-import matplotlib as mp
+import matplotlib.pyplot as plt
 import math
 
 EPS = 10e-10
@@ -38,7 +38,7 @@ def criarMatrizBordas(nt, nx, fill):
 def EDO(i, j, **params):
     # params = (x, t, T, nt, deltaX, deltaT, betha2, ut0, ut1)
 
-    import pdb; pdb.set_trace()
+    #import pdb; pdb.set_trace()
 
     firstTime = params['firstTime']
     T = params['T']
@@ -65,34 +65,34 @@ def EDO(i, j, **params):
     #    return 0
     params['matrix'] = matrix
 
-    if j == 0 or j == params['nx'] or i <= 1:
-        if matrix[i][j] == 'a':
-            matrix[i][j] = 0
-            params['matrix'] = matrix
-        return 0, matrix
+    # if j == 0 or j == params['nx'] or i <= 1:
+    #     if matrix[i][j] == 'a':
+    #         matrix[i][j] = 0
+    #         params['matrix'] = matrix
+    #     return 0, matrix
 
     alpha = params['c'] * params['deltaT']/deltaX
 #Primeira EDO calculada
-    if(matriz[i-2][j] != 'a'):
-        edo1 = matriz[i-2][j]
+    if(matrix[i-2][j] != 'a'):
+        edo1 = matrix[i-2][j]
     else:
         edo1 = EDO(i-2,j,**params)[0]
 
 #Segunda EDO calculada
-    if(matriz[i-1][j] != 'a'):
-        edo2 = matriz[i-1][j]
+    if(matrix[i-1][j] != 'a'):
+        edo2 = matrix[i-1][j]
     else:
         edo2 = EDO(i-1,j,**params)[0]
 
 #Terceira EDO calculada
-    if(matriz[i-1][j+1] != 'a'):
-        edo3 = matriz[i-1][j+1]
+    if(matrix[i-1][j+1] != 'a'):
+        edo3 = matrix[i-1][j+1]
     else:
         edo3 = EDO(i-1,j+1,**params)[0]
 
 #Quarta EDO calculada
-    if(matriz[i-1][j-1] != 'a'):
-        edo4 = matriz[i-1][j-1]
+    if(matrix[i-1][j-1] != 'a'):
+        edo4 = matrix[i-1][j-1]
     else:
         edo4 = EDO(i-1,j-1,**params)[0]
 
@@ -103,27 +103,24 @@ def EDO(i, j, **params):
     term3  = (alpha**2) * (term3A + term3B)
     term4  = (params['deltaT'] **2) * funcaoF(ti, xj, c2)
 
-    print("term4 = {:.2f}".format(term4))
+    #print("term4 = {:.2f}".format(term4))
     sum = term1 + term2 + term3 + term4
     if matrix[i][j] == 'a':
         matrix[i][j] = sum
     return sum, matrix
-
-    # valores = m.criarMatriz(nt, nx)
-#
-    # Se j = 0 e i = 1 ou 0, entao uij = 0
-# valores[0][0] = 0 # u(i=0, j=0) = u(t0, x0)
-    # valores[1][0] = 0 # u(i=1, j=0) = u(t1, x0)
-    # valores[0][1] = "naosei"# u(i=0, j=1) = u(t0, x1)
-    # valores[1][1] = "tambemnao"# u(i=1, j=1) = u(t1, x1)
-#
-    # for it1 in range(nt):
-        # if(it1 > 1):
-            #
-
 c2 = 10
 T = 1
 nt = 350 #inicial
 deltaX = 0.01
-
-print(EDO(nt=nt, deltaX=deltaX, c2=c2, T=T, i=10, j=10, firstTime=True))
+def plotart(t):
+    valoresx = []
+    valoresy = []
+    i_edo = int(t*nt)
+    for j in range (100):
+        valoresx.append(j*deltaX)
+        valoresy.append(EDO(nt=nt, deltaX=deltaX, c2=c2, T=T, i=i_edo, j=j, firstTime=True)[0])
+    plt.scatter(x = valoresx,y = valoresy)
+    plt.show()
+#Parte principal
+plotart(0.5)
+#print(EDO(nt=nt, deltaX=deltaX, c2=c2, T=T, i=70, j=50, firstTime=True)[0])
