@@ -109,7 +109,7 @@ def EDO(i, j, **params):
 
 c2 = 10
 T = 1
-nt = 350 #inicial
+nt = 310 #inicial
 deltaX = 0.01
 nx = 1 / deltaX
 
@@ -119,12 +119,12 @@ def plotArt(t):
     valoresx = []
     valoresy = []
     i_edo = int(t*nt)
-    for i in range(0, nt, 10):
-        for j in range (100):
-            valoresx.append(j*deltaX)
-            valoresy.append(EDO(matrix=matrix, nt=nt-i, deltaX=deltaX, c2=c2, T=T, i=i_edo, j=j, firstTime=True)[0])
-        plt.plot(valoresx, valoresy)
-        plt.show()
+
+    for j in range (100):
+        valoresx.append(j*deltaX)
+        valoresy.append(EDO(matrix=matrix, nt=nt, deltaX=deltaX, c2=c2, T=T, i=i_edo, j=j, firstTime=True)[0])
+    plt.plot(valoresx, valoresy)
+    plt.show()
 #Parte principal
 plotArt(0.5)
 #print(EDO(nt=nt, deltaX=deltaX, c2=c2, T=T, i=70, j=50, firstTime=True)[0])
