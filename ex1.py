@@ -108,6 +108,7 @@ def EDO(i, j, **params):
     if matrix[i][j] == 'a':
         matrix[i][j] = sum
     return sum, matrix
+
 c2 = 10
 T = 1
 nt = 350 #inicial
