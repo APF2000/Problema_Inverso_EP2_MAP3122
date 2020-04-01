@@ -109,7 +109,7 @@ def EDO(i, j, **params):
 
 c2 = 10
 T = 1
-nt = 310 #inicial
+nt = 350 #inicial
 deltaX = 0.01
 nx = 1 / deltaX
 

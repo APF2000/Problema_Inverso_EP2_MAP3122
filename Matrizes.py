@@ -1,15 +1,5 @@
-
-# coding: utf-8
-
-# In[1]:
-
-
 import numpy as np
-#import matplotlib.pyplot as plt - não precisa disso agora
-
-
-# In[2]:
-
+import math
 
 def criarMatriz(num_linhas,num_colunas, fill):
     dimensoes = [num_linhas,num_colunas]
@@ -23,9 +13,6 @@ def criarMatriz(num_linhas,num_colunas, fill):
     return matriz
 
 
-# In[3]:
-
-
 def somaMatrizes(matrizA,matrizB):
     linA = matrizA.shape[0]
     colA = matrizA.shape[1]
@@ -34,14 +21,11 @@ def somaMatrizes(matrizA,matrizB):
     if(linA != linB or colA != colB):
         return
     else:
-        soma = criarMatriz(linA,colA)
+        soma = criarMatriz(linA,colA, False)
         for i in range(linA):
             for j in range (colA):
                 soma[i][j] = matrizA[i][j] + matrizB[i][j]
     return soma
-
-
-# In[4]:
 
 
 def multiplicacaoMatrizes(matrizA,matrizB): # C = A*B
@@ -53,7 +37,7 @@ def multiplicacaoMatrizes(matrizA,matrizB): # C = A*B
         return
     else:
         p = linB
-        C = criarMatriz(linA,colB)
+        C = criarMatriz(linA,colB, False)
         for i in range(linA):
             for j in range(colB):
                 soma = 0
@@ -62,60 +46,76 @@ def multiplicacaoMatrizes(matrizA,matrizB): # C = A*B
                 C[i][j] = soma
     return C
 
-
-
-# In[5]:
-
-
 def transpostaMatriz(matrizA):
     linA = matrizA.shape[0]
     colA = matrizA.shape[1]
-    transposta = criarMatriz(colA,linA)
+    transposta = criarMatriz(colA,linA, False)
     for i in range(colA):
             for j in range (linA):
                 transposta[i][j] = matrizA[j][i]
     return transposta
 
-
-# In[6]:
-
-
 def multiplicacaoRealMatriz(matrizA,alfa):
     linA = matrizA.shape[0]
     colA = matrizA.shape[1]
-    matriz = criarMatriz(colA,linA)
+    matriz = criarMatriz(colA,linA, False)
     for i in range(linA):
             for j in range (colA):
                 matriz[i][j] = alfa*matrizA[j][i]
     return matriz
 
+def matrixCholesky(A):
+    n = len(A)
+    # Cria matriz de zeros
+    ch = criarMatriz(n, n, False)
 
-# In[7]:
+    # Primeiro termo
+    ch[0][0] = math.sqrt(A[0][0])
 
-#import pdb; pdb.set_trace() em caso de acidentes
+    # Primeira coluna
+    auxSum = 0
+    for i in range(1, n):
+        ch[i][0] = A[i][0] / ch[0][0]
 
-# A = criarMatriz(2,2)
-# B = criarMatriz(2,2)
-#print(B) -B[0][1] = 0
-# B[1][0] = 0
- # usar print(B) no debugger
-#print(A)
-# C = multiplicacaoMatrizes(A,B)
-#print(C)
-# C = multiplicacaoRealMatriz(C,2)
-#print(C)
+    #import pdb; pdb.set_trace()
+    for i in range(1, n):
+        # Resto dos elementos
+        for j in range(1, i):
+            auxSum = 0
+            for k in range(j):
+                auxSum += (ch[i][k] * ch[j][k])
+            ch[i][j] = (A[i][j] - auxSum) / ch[j][j]
+        auxSum = 0
+        for k in range(i):
+            auxSum += ( ch[i][k] * ch[i][k] )
+
+        # Diagonal
+        ch[i][i] = math.sqrt(A[i][i] - auxSum)
+    return ch
+
+# A * x = b
+# (ch * chT) * x = b
 #
-# D = criarMatriz(3,2)
-# D[0] = [1, 2]
-# D[1] = [2, 4]
-# D[2] = [3, 5]
-#
-# E = criarMatriz(2,3)
-# E[0] = [1, 0.5, 1/3]
-# E[1] = [1, 1/3, 0.5]
-#
-# C = somaMatrizes(A, B)
-#
-# F = multiplicacaoMatrizes(D, E)
-# F = transpostaMatriz(F)
-# print(F) # esse aqui já e bem necessário
+# ch * y  = b
+# chT * x = y
+def cholesky(A, b):
+    ch = matrixCholesky(A)
+    chT = transpostaMatriz(ch)
+
+    # ch * y = b
+    return ch
+
+A = criarMatriz(3, 3, False)
+A[0] = [   4,  12, -16] #    | 2, 0, 0 |   | 2, 6, -8 |
+A[1] = [  12,  37, -43] # == | 6, 1, 0 | * | 0, 1,  5 |
+A[2] = [ -16, -43,  98] #    |-8, 5, 3 |   | 0, 0,  3 |
+
+b = criarMatriz(3, 1, False)
+b = [ 1, 2, 3 ]
+
+ch = cholesky(A, b)
+chT = transpostaMatriz(ch)
+
+print(multiplicacaoMatrizes(ch, chT))
+print()
+print(multiplicacaoMatrizes(chT, ch))
