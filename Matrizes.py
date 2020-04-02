@@ -94,6 +94,41 @@ def matrixCholesky(A):
     return ch
 
 # A * x = b
+# isL determina se a matriz A é :
+#   - L : triangular inferior
+#   - U : triangular superior
+def sistemaLouU(A, b, isL):
+    n = len(A)
+    x = criarMatriz(n, 1, False)
+
+    #import pdb; pdb.set_trace()
+
+    for i in range(n):
+        if isL :
+            line = i
+        else :
+            line = (n - 1) - i
+
+        aux = b[line][0]
+        for j in range(i):
+            if isL :
+                col = j
+            else :
+                col = (n - 1) - j
+
+            if line != col:
+                aux -= ( A[line][col] * x[col][0] )
+
+        if A[line][line] == 0:
+            print("Sistema nao pode ter 0 na diagonal")
+            return False
+
+        x[line][0] = ( aux / A[line][line] )
+
+    return x
+
+
+# A * x = b
 # (ch * chT) * x = b
 #
 # ch * y  = b
@@ -103,7 +138,16 @@ def cholesky(A, b):
     chT = transpostaMatriz(ch)
 
     # ch * y = b
-    return ch
+    #print(ch)
+    y = sistemaLouU(ch, b, isL=True)
+    #print("\nsolucao = ", y)
+
+    # chT * x = y
+    print(chT)
+    x = sistemaLouU(chT, y, isL=False)
+    print("\nsolucao = ", x)
+
+    return x
 
 A = criarMatriz(3, 3, False)
 A[0] = [   4,  12, -16] #    | 2, 0, 0 |   | 2, 6, -8 |
@@ -111,11 +155,20 @@ A[1] = [  12,  37, -43] # == | 6, 1, 0 | * | 0, 1,  5 |
 A[2] = [ -16, -43,  98] #    |-8, 5, 3 |   | 0, 0,  3 |
 
 b = criarMatriz(3, 1, False)
-b = [ 1, 2, 3 ]
+b[0][0] = 1
+b[1][0] = 2
+b[2][0] = 3
 
-ch = cholesky(A, b)
-chT = transpostaMatriz(ch)
+x = cholesky(A, b)
+print(A)
+print("\n         * ")
+print(x)
+print("\n         ==")
+print(multiplicacaoMatrizes(A, x))
 
-print(multiplicacaoMatrizes(ch, chT))
-print()
-print(multiplicacaoMatrizes(chT, ch))
+# ch = cholesky(A, b)
+# chT = transpostaMatriz(ch)
+#
+# print(multiplicacaoMatrizes(ch, chT))
+# print()
+# print(multiplicacaoMatrizes(chT, ch))
