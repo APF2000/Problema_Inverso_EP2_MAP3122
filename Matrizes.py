@@ -138,14 +138,11 @@ def cholesky(A, b):
     chT = transpostaMatriz(ch)
 
     # ch * y = b
-    #print(ch)
     y = sistemaLouU(ch, b, isL=True)
-    #print("\nsolucao = ", y)
 
     # chT * x = y
-    print(chT)
     x = sistemaLouU(chT, y, isL=False)
-    print("\nsolucao = ", x)
+
 
     return x
 
@@ -166,9 +163,46 @@ print(x)
 print("\n         ==")
 print(multiplicacaoMatrizes(A, x))
 
-# ch = cholesky(A, b)
-# chT = transpostaMatriz(ch)
-#
-# print(multiplicacaoMatrizes(ch, chT))
-# print()
-# print(multiplicacaoMatrizes(chT, ch))
+print("\n\n\n-----------------------------------------\n\n\n")
+
+A = criarMatriz(3, 3, False)
+A[0] = [  1,  -3,   0] #      | 0 |
+A[1] = [ -3,  13,   4] # x == | 2 |
+A[2] = [  0,   4,  10] #      | 1 |
+
+b = criarMatriz(3, 1, False)
+b[0][0] = -6
+b[1][0] = 30
+b[2][0] = 18
+
+x = cholesky(A, b)
+print(A)
+print("\n         * ")
+print(x)
+print("\n         ==")
+print(multiplicacaoMatrizes(A, x))
+
+print("\n\n\n-----------------------------------------\n\n\n")
+
+A = criarMatriz(4, 4, False)
+A[0] = [  1, -3,  0,  1] #    |  1, 0,  0,  0 |   | 1, -3,  0,  1 |
+A[1] = [ -3, 13,  4,  5] # == | -3, 2,  0,  0 | * | 0,  2,  2,  4 |
+A[2] = [  0,  4, 13,  5] #    |  0, 2,  3,  0 |   | 0,  0,  3, -1 |
+A[3] = [  1,  5,  5, 43] #    |  1, 4, -1,  5 |   | 0,  0,  0,  5 |
+
+# sol = [ 1, 0, 3, 0]
+
+b = criarMatriz(4, 1, False)
+b[0][0] = 1
+b[1][0] = 9
+b[2][0] = 39
+b[3][0] = 16
+
+x = cholesky(A, b)
+print(A)
+print("\n         * ")
+print(x)
+print("\n         ==")
+print(multiplicacaoMatrizes(A, x))
+
+print("\n\n\n-----------------------------------------\n\n\n")
