@@ -44,25 +44,26 @@ def funDr(s):
 def createFuncs():
     return 0
 
+
 nt = 100
 deltaT = 1 / nt
 deltaX = 0.01
+nx = int(1 / deltaX)
+
 c2 = 20
 T = 1
 
 def ukx(xr):
     j = int( xr / deltaX )
 
-    x = []
+    x, matrix = [], []
 
-    matrix = ex1.criarMatrizBordas(nt, nx, "a")
     firstTime = True
     for i in range(nt + 1):
-        aux = ex1.EDO(matrix=matrix, nt=nt, deltaX=deltaX, c2=c2, T=T, i=i, j=j, firstTime=True)
+        aux = ex1.EDO(i, j, matrix, nt, nx, c2, T, firstTime)
         x.append(aux[0])
         matrix = aux[1]
         firstTime = False
-
     return x
 
 print(ukx(0.7))
