@@ -146,6 +146,48 @@ def cholesky(A, b):
 
     return x
 
+def metodoSOR (matrizA,matrizb,n):
+    numIteracoes = 1000
+    omega = 1.6
+    iteracoes = 0
+    respostas = criarMatriz(n,1,False)
+    print(respostas)
+
+    while(iteracoes < 10):
+        for i in range(n):
+            somatorias = 0
+            for j in range(i):
+                somatorias = matrizA[i][j]*respostas[j][0] + somatorias
+            for j in range(i+1,n):
+                somatorias = matrizA[i][j]*respostas[j][0] + somatorias
+            #print(somatorias)
+            respostas[i][0] = (1/matrizA[i][i])*(matrizb[i][0]-somatorias)
+        iteracoes += 1
+
+    iteracoes = 0
+
+    while(iteracoes < 1000):
+        for i in range(n):
+            somatorias = 0
+            for j in range(i):
+                somatorias = matrizA[i][j]*respostas[j][0] + somatorias
+            for j in range(i+1,n):
+                somatorias = matrizA[i][j]*respostas[j][0] + somatorias
+            #print(somatorias)
+            respostas[i][0] = (1-omega)*respostas[i][0] + (omega/matrizA[i][i])*(matrizb[i][0]-somatorias)
+        iteracoes += 1
+    return respostas
+
+def testarRespostaSistemaLinear (matrizA,matrizb,n,respostas):
+    precisao = 0.01
+    for i in range(n):
+        soma = 0
+        for j in range(n):
+            soma = matrizA[i][j]*respostas[j][0] + soma
+        if(np.absolute(soma - matrizb[i][0]) > precisao):
+            return False
+    return True
+
 A = criarMatriz(3, 3, False)
 A[0] = [   4,  12, -16] #    | 2, 0, 0 |   | 2, 6, -8 |
 A[1] = [  12,  37, -43] # == | 6, 1, 0 | * | 0, 1,  5 |
