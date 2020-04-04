@@ -36,17 +36,14 @@ def criarMatrizBordas(nt, nx, fill):
 
 # Solucao de u(ti, xj) para os parâmetros dados
 def EDO(i, j, **params):
-    # params = (x, t, T, nt, deltaX, deltaT, betha2, ut0, ut1)
-
-    #import pdb; pdb.set_trace()
+    matrix = params['matrix']
 
     firstTime = params['firstTime']
     T = params['T']
     nt = params['nt']
     deltaX = params['deltaX']
-    #betha2 = params['betha2']
-    #xc = params['xc']
     c2 = params['c2']
+
 
     if firstTime :
         params['firstTime'] = False
@@ -54,20 +51,11 @@ def EDO(i, j, **params):
         nx = 1 / deltaX; params['nx'] = nx # Definicao de deltaX
         c = math.sqrt(c2); params['c'] = c
 
-    matrix = params['matrix']
 
     ti = i * params['deltaT']
     xj = j * params['deltaX']
 
-    #if np.absolute(xj) < EPS or np.absolute(1 - xj) < EPS:
-    #    return 0
     params['matrix'] = matrix
-
-    # if j == 0 or j == params['nx'] or i <= 1:
-    #     if matrix[i][j] == 'a':
-    #         matrix[i][j] = 0
-    #         params['matrix'] = matrix
-    #     return 0, matrix
 
     alpha = params['c'] * params['deltaT']/deltaX
 #Primeira EDO calculada
