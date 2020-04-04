@@ -22,95 +22,76 @@ def funcaoF(t, x, c2):
     return aux1 * aux2 * aux3
 
 def criarMatrizBordas(nt, nx, fill):
-    matrix = m.criarMatriz(nt, nx+1, fill='a')
+    matrix = m.criarMatriz(nt + 1, nx+1, fill='a')
 
-    for i in range(nx):
+    for i in range(nx + 1):
         matrix[0][i] = 0
         matrix[1][i] = 0
 
-    for i in range(nt):
+    for i in range(nt + 1):
         matrix[i][0] = 0
         matrix[i][nx] = 0
 
     return matrix
 
+def fillEDOmatrix(nt, nx, alpha, T, matrix, c2):
+    deltaT = T / nt
+    deltaX = 1 / nx
+    for line in range(2, nt+1):
+        for col in range(1, nx):
+            ti = line * deltaT
+            xj = col * deltaX
+
+            term1 = -matrix[line-2][col]
+            term2  = 2 * (1 - alpha**2) * matrix[line-1][col]
+            term3A = matrix[line-1][col+1]
+            term3B = matrix[line-1][col-1]
+            term3  = (alpha**2) * (term3A + term3B)
+            term4  = (deltaT **2) * funcaoF(ti, xj, c2)
+
+            matrix[line][col] = term1 + term2 + term3 + term4
+    return matrix
+
 # Solucao de u(ti, xj) para os parâmetros dados
-def EDO(i, j, **params):
-    matrix = params['matrix']
+def EDO(i, j, matrix, nt, nx, c2, T, firstTime):
 
-    firstTime = params['firstTime']
-    T = params['T']
-    nt = params['nt']
-    deltaX = params['deltaX']
-    c2 = params['c2']
+    #import pdb; pdb.set_trace()
 
+    deltaT = T / nt
+    deltaX = 1 / nx
+    alpha = math.sqrt(c2) * deltaT / deltaX
 
-    if firstTime :
-        params['firstTime'] = False
-        deltaT = T / nt; params['deltaT'] = deltaT
-        nx = 1 / deltaX; params['nx'] = nx # Definicao de deltaX
-        c = math.sqrt(c2); params['c'] = c
+    if firstTime:
+        matrix = criarMatrizBordas(nt, nx, fill='a')
+        matrix = fillEDOmatrix(nt, nx, alpha, T, matrix, c2)
 
+    return matrix[i][j], matrix
 
-    ti = i * params['deltaT']
-    xj = j * params['deltaX']
-
-    params['matrix'] = matrix
-
-    alpha = params['c'] * params['deltaT']/deltaX
-#Primeira EDO calculada
-    if(matrix[i-2][j] != 'a'):
-        edo1 = matrix[i-2][j]
-    else:
-        edo1 = EDO(i-2,j,**params)[0]
-
-#Segunda EDO calculada
-    if(matrix[i-1][j] != 'a'):
-        edo2 = matrix[i-1][j]
-    else:
-        edo2 = EDO(i-1,j,**params)[0]
-
-#Terceira EDO calculada
-    if(matrix[i-1][j+1] != 'a'):
-        edo3 = matrix[i-1][j+1]
-    else:
-        edo3 = EDO(i-1,j+1,**params)[0]
-
-#Quarta EDO calculada
-    if(matrix[i-1][j-1] != 'a'):
-        edo4 = matrix[i-1][j-1]
-    else:
-        edo4 = EDO(i-1,j-1,**params)[0]
-
-    term1  = -edo1
-    term2  = 2 * (1 - alpha**2) * edo2
-    term3A = edo3
-    term3B = edo4
-    term3  = (alpha**2) * (term3A + term3B)
-    term4  = (params['deltaT'] **2) * funcaoF(ti, xj, c2)
-
-    #print("term4 = {:.2f}".format(term4))
-    sum = term1 + term2 + term3 + term4
-    if matrix[i][j] == 'a':
-        matrix[i][j] = sum
-    return sum, matrix
 
 c2 = 10
 T = 1
-nt = 350 #inicial
+nt = 2000 #inicial
+deltaT = 1 / nt
 deltaX = 0.01
-nx = 1 / deltaX
-
-matrix = criarMatrizBordas(int(nt), int(nx), fill='a')
+nx = int(1 / deltaX)
 
 def plotArt(t):
     valoresx = []
     valoresy = []
-    i_edo = int(t*nt)
+    i = int(t*nt)
 
-    for j in range (100):
+    matrix = []
+
+    firstTime = True
+    for j in range (nx):
         valoresx.append(j*deltaX)
-        valoresy.append(EDO(matrix=matrix, nt=nt, deltaX=deltaX, c2=c2, T=T, i=i_edo, j=j, firstTime=True)[0])
+
+        aux = EDO(i, j, matrix, nt, nx, c2, T, firstTime)
+        valoresy.append(aux[0])
+        matrix = aux[1]
+
+        firstTime = False
+
     plt.plot(valoresx, valoresy)
     plt.show()
 #Parte principal
