@@ -33,7 +33,7 @@ def criarMatrizBordas(nt, nx):
 
     return matrix
 
-def fillEDOmatrix(nt, nx, alpha, T, matrix, c2):
+def fillEDOmatrix(nt, nx, alpha, T, matrix, c2, xc):
     deltaT = T / nt
     deltaX = 1 / nx
     for line in range(2, nt+1):
@@ -46,13 +46,13 @@ def fillEDOmatrix(nt, nx, alpha, T, matrix, c2):
             term3A = matrix[line-1][col+1]
             term3B = matrix[line-1][col-1]
             term3  = (alpha**2) * (term3A + term3B)
-            term4  = (deltaT **2) * funcaoF(ti, xj, c2, 0.7)
+            term4  = (deltaT **2) * funcaoF(ti, xj, c2, xc)
 
             matrix[line][col] = term1 + term2 + term3 + term4
     return matrix
 
 # Solucao de u(ti, xj) para os parâmetros dados
-def EDO(i, j, matrix, nt, nx, c2, T, firstTime):
+def EDO(i, j, matrix, nt, nx, c2, T, firstTime, xc):
 
     #import pdb; pdb.set_trace()
 
@@ -62,16 +62,16 @@ def EDO(i, j, matrix, nt, nx, c2, T, firstTime):
 
     if firstTime:
         matrix = criarMatrizBordas(nt, nx)
-        matrix = fillEDOmatrix(nt, nx, alpha, T, matrix, c2)
+        matrix = fillEDOmatrix(nt, nx, alpha, T, matrix, c2, xc)
 
     return matrix[i][j], matrix
 
 
 c2 = 20
 T = 1
-nt = 500 #inicial
+nt = 1500 #inicial
 deltaT = 1 / nt
-deltaX = 0.01
+deltaX = 0.005
 nx = int(1 / deltaX)
 
 def plotArt(t):
@@ -85,17 +85,18 @@ def plotArt(t):
     for j in range (nx):
         valoresx = np.append(valoresx, j*deltaX)
 
-        aux = EDO(i, j, matrix, nt, nx, c2, T, firstTime)
+        aux = EDO(i, j, matrix, nt, nx, c2, T, firstTime, xc=0.7)
         valoresy = np.append(valoresy, aux[0])
         matrix = aux[1]
 
         firstTime = False
 
     plt.plot(valoresx, valoresy)
+    plt.ylim(-0.6, 0.6)
     plt.show()
 #Parte principal
 #plotArt(0.1)
-plotArt(0.2)
+#plotArt(0.2)
 #plotArt(0.3)
 #plotArt(0.4)
 #plotArt(0.5)
