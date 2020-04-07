@@ -1,15 +1,9 @@
 import numpy as np
 import math
 
-def criarMatriz(num_linhas,num_colunas, fill):
+def criarMatriz(num_linhas,num_colunas):
     dimensoes = [num_linhas,num_colunas]
     matriz = np.zeros(dimensoes)
-    if fill :
-        matriz = []
-        for i in range(num_linhas):
-            matriz.append([])
-            for j in range(num_colunas):
-                matriz[i].append(fill)
     return matriz
 
 

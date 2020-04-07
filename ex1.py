@@ -21,8 +21,8 @@ def funcaoF(t, x, c2):
 
     return aux1 * aux2 * aux3
 
-def criarMatrizBordas(nt, nx, fill):
-    matrix = m.criarMatriz(nt + 1, nx+1, fill='a')
+def criarMatrizBordas(nt, nx):
+    matrix = m.criarMatriz(nt + 1, nx+1)
 
     for i in range(nx + 1):
         matrix[0][i] = 0
@@ -62,15 +62,15 @@ def EDO(i, j, matrix, nt, nx, c2, T, firstTime):
     alpha = math.sqrt(c2) * deltaT / deltaX
 
     if firstTime:
-        matrix = criarMatrizBordas(nt, nx, fill='a')
+        matrix = criarMatrizBordas(nt, nx)
         matrix = fillEDOmatrix(nt, nx, alpha, T, matrix, c2)
 
     return matrix[i][j], matrix
 
 
-c2 = 10
+c2 = 20
 T = 1
-nt = 2000 #inicial
+nt = 1500 #inicial
 deltaT = 1 / nt
 deltaX = 0.01
 nx = int(1 / deltaX)
@@ -95,5 +95,10 @@ def plotArt(t):
     plt.plot(valoresx, valoresy)
     plt.show()
 #Parte principal
+plotArt(0.1)
+plotArt(0.2)
+plotArt(0.3)
+plotArt(0.4)
 plotArt(0.5)
+plotArt(0.6)
 #print(EDO(nt=nt, deltaX=deltaX, c2=c2, T=T, i=70, j=50, firstTime=True)[0])

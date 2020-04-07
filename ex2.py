@@ -16,8 +16,8 @@ def integral(u1, u2, s0, sN, deltaT):
     return sum * deltaT / 2
 
 def linearSystem(K, funcs, dr, deltaT):
-    B = m.criarMatriz(K, K, False)
-    c = m.criarMatriz(K, 1, False)
+    B = m.criarMatriz(K, K)
+    c = m.criarMatriz(K, 1)
 
     for i in range(K):
         for j in range(i):
