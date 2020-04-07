@@ -68,26 +68,26 @@ def EDO(i, j, matrix, nt, nx, c2, T, firstTime):
     return matrix[i][j], matrix
 
 
-c2 = 20
+c2 = 10
 T = 1
-nt = 1500 #inicial
+nt = 350 #inicial
 deltaT = 1 / nt
 deltaX = 0.01
 nx = int(1 / deltaX)
 
 def plotArt(t):
-    valoresx = []
-    valoresy = []
+    valoresx = np.array([])
+    valoresy = np.array([])
     i = int(t*nt)
 
     matrix = []
 
     firstTime = True
     for j in range (nx):
-        valoresx.append(j*deltaX)
+        valoresx = np.append(valoresx, j*deltaX)
 
         aux = EDO(i, j, matrix, nt, nx, c2, T, firstTime)
-        valoresy.append(aux[0])
+        valoresy = np.append(valoresy, aux[0])
         matrix = aux[1]
 
         firstTime = False
@@ -95,10 +95,10 @@ def plotArt(t):
     plt.plot(valoresx, valoresy)
     plt.show()
 #Parte principal
-# plotArt(0.1)
-# plotArt(0.2)
-# plotArt(0.3)
-# plotArt(0.4)
-# plotArt(0.5)
+plotArt(0.1)
+plotArt(0.2)
+plotArt(0.3)
+plotArt(0.4)
+plotArt(0.5)
 # plotArt(0.6)
 #print(EDO(nt=nt, deltaX=deltaX, c2=c2, T=T, i=70, j=50, firstTime=True)[0])
