@@ -56,17 +56,19 @@ T = 1
 def ukx(xr):
     j = int( xr / deltaX )
 
-    x, matrix = [], []
+    x = np.array([])
+    matrix = [] # default, sem significado
 
     firstTime = True
     for i in range(nt + 1):
         aux = ex1.EDO(i, j, matrix, nt, nx, c2, T, firstTime)
-        x.append(aux[0])
+        x = np.append(x, aux[0])
         matrix = aux[1]
         firstTime = False
     return x
 
-print(ukx(0.7))
+a = ukx(0.7)
+print(type(a))
 
 
 
