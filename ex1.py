@@ -5,10 +5,9 @@ import math
 
 EPS = 10e-10
 
-def funcaoF(t, x, c2):
+def funcaoF(t, x, c2, xc):
 
     betha2 = 10 ** 2
-    xc = 0.7
 
     pi2 = (np.pi) ** 2
 
@@ -47,7 +46,7 @@ def fillEDOmatrix(nt, nx, alpha, T, matrix, c2):
             term3A = matrix[line-1][col+1]
             term3B = matrix[line-1][col-1]
             term3  = (alpha**2) * (term3A + term3B)
-            term4  = (deltaT **2) * funcaoF(ti, xj, c2)
+            term4  = (deltaT **2) * funcaoF(ti, xj, c2, 0.7)
 
             matrix[line][col] = term1 + term2 + term3 + term4
     return matrix
@@ -68,9 +67,9 @@ def EDO(i, j, matrix, nt, nx, c2, T, firstTime):
     return matrix[i][j], matrix
 
 
-c2 = 10
+c2 = 20
 T = 1
-nt = 350 #inicial
+nt = 500 #inicial
 deltaT = 1 / nt
 deltaX = 0.01
 nx = int(1 / deltaX)
@@ -95,10 +94,10 @@ def plotArt(t):
     plt.plot(valoresx, valoresy)
     plt.show()
 #Parte principal
-plotArt(0.1)
+#plotArt(0.1)
 plotArt(0.2)
-plotArt(0.3)
-plotArt(0.4)
-plotArt(0.5)
+#plotArt(0.3)
+#plotArt(0.4)
+#plotArt(0.5)
 # plotArt(0.6)
 #print(EDO(nt=nt, deltaX=deltaX, c2=c2, T=T, i=70, j=50, firstTime=True)[0])

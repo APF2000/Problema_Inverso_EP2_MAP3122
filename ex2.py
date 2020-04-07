@@ -6,6 +6,7 @@ import ex1
 def integral(u1, u2, s0, sN, deltaT):
     n = int( (sN - s0) / deltaT )
     sum = 0
+    #import pdb; pdb.set_trace()
     for i in range(1, n):
         si = s0 + i * deltaT
         sum += (u1(si) * u2(si))
@@ -33,25 +34,21 @@ def linearSystem(K, funcs, dr, deltaT):
 def readNPY(name):
     return np.load(name)
 
-
-dr = readNPY("dr3.npy")
-def funDr(s):
-    nt = 1000
-    pos = int(s * nt)
-
-    return dr[pos]
-
-def createFuncs():
-    return 0
-
-
-nt = 100
+nt = 500
 deltaT = 1 / nt
 deltaX = 0.01
 nx = int(1 / deltaX)
 
 c2 = 20
 T = 1
+
+dr = readNPY("dr3.npy")
+def funDr(s):
+    pos = int(s * nt)
+    return dr[pos]
+
+def createFuncs():
+    return 0
 
 def ukx(xr):
     j = int( xr / deltaX )
@@ -70,9 +67,10 @@ def ukx(xr):
 a = ukx(0.7)
 print(type(a))
 
-
-
 def ukt(t):
-    nt = 1000
+    xr = 0.7
     pos = int(t * nt)
-    return uk(x)[pos]
+    return ukx(xr)[pos]
+
+print(integral(ukt, (lambda x:1), 0.50, 0.6, 0.01))
+#print(integral(funDr, funDr, 0.5, 1, 0.01))
