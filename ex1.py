@@ -85,7 +85,7 @@ def plotArt(t):
     for j in range (nx):
         valoresx = np.append(valoresx, j*deltaX)
 
-        aux = EDO(i, j, matrix, nt, nx, c2, T, firstTime, xc=0.7)
+        aux = EDO(i, j, matrix, nt, nx, c2, T, firstTime, xc=0.9)
         valoresy = np.append(valoresy, aux[0])
         matrix = aux[1]
 

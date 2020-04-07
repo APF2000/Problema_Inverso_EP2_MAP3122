@@ -34,12 +34,12 @@ def linearSystem(K, funcs, dr, deltaT):
 def readNPY(name):
     return np.load(name)
 
-nt = 350
+nt = 1000
 deltaT = 1 / nt
 deltaX = 0.01
 nx = int(1 / deltaX)
 
-c2 = 10
+c2 = 20
 T = 1
 
 dr = readNPY("dr3.npy")
@@ -61,14 +61,6 @@ def ukx(xr, xc):
         firstTime = False
     return x
 
-#a = ukx(0.7)
-#print(type(a))
-
-# def ukt(t):
-    # xr = 0.7
-    # pos = int(t * nt)
-    # return ukx(xr, xc)[pos]
-
 
 # Cria uma lista de funcoes a partir de um dos parametros
 # do vetor xc fornecido, com K posições
@@ -76,33 +68,19 @@ def createFuncs(xcs, K):
     xr = 0.7
     funcs = []
     for i in range(K):
-        aux = ukx(xr, xcs[i])
+        aux = ukx(xr=xr, xc=xcs[i])
         funcs.append( lambda t: aux[int(t * nt)] )
 
-    return aux
+    return funcs
 
 
-xcs = [0.7]
-aux = createFuncs(xcs, len(xcs))
-# aux = []
-#for i in range(nt):
-#    aux.append(funcs[0](i * deltaT))
-#print(aux)
+xcs = [0.2, 0.3, 0.9]
+funcs = createFuncs(xcs, len(xcs))
+for i in range(nt):
+    print(funcs[0](i*deltaT), funcs[1](i*deltaT), funcs[2](i*deltaT))
 
-matrix = []
-matrix = (ex1.EDO(100, 70, matrix, nt, nx, c2, T, True, xc=0.7)[1])
-#print(matrix[100])
+print(funcs[0](0.2), funcs[1](0.2), funcs[2](0.2))
 
-aux2 = []
-for i in range(nt+1):
-    aux2.append(matrix[i][70])
-#print(aux2)
-
-EPS = 0.00001
-cont = 0
-for i in range(nx):
-    if (np.absolute(aux2[i] - aux[i]) >= EPS):
-        cont += 1
-        print(aux2[i], aux[i])
-
-print(cont)
+# B, c = linearSystem(len(xcs), funcs, funDr, deltaT)
+# print(B)
+# print(c)
