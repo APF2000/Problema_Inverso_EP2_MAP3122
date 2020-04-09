@@ -71,8 +71,8 @@ c2 = 20
 T = 1
 nt = 1500 #inicial
 deltaT = 1 / nt
-deltaX = 0.005
-nx = int(1 / deltaX)
+nx = 200
+deltaX = 1 / nx
 
 def plotArt(t):
     valoresx = np.array([])
@@ -85,7 +85,7 @@ def plotArt(t):
     for j in range (nx):
         valoresx = np.append(valoresx, j*deltaX)
 
-        aux = EDO(i, j, matrix, nt, nx, c2, T, firstTime, xc=0.9)
+        aux = EDO(i, j, matrix, nt, nx, c2, T, firstTime, xc=0.7)
         valoresy = np.append(valoresy, aux[0])
         matrix = aux[1]
 
@@ -96,9 +96,9 @@ def plotArt(t):
     plt.show()
 #Parte principal
 #plotArt(0.1)
-#plotArt(0.2)
+plotArt(0.2)
 #plotArt(0.3)
 #plotArt(0.4)
-#plotArt(0.5)
-# plotArt(0.6)
+plotArt(0.5)
+#plotArt(0.6)
 #print(EDO(nt=nt, deltaX=deltaX, c2=c2, T=T, i=70, j=50, firstTime=True)[0])

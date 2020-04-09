@@ -62,24 +62,27 @@ def ukx(xr, xc):
     return x
 
 
+porFora = []
+
 # Cria uma lista de funcoes a partir de um dos parametros
 # do vetor xc fornecido, com K posições
 def createFuncs(xcs, K):
     xr = 0.7
     funcs = []
     for i in range(K):
-        aux = ukx(xr=xr, xc=xcs[i])
-        funcs.append( lambda t: aux[int(t * nt)] )
+        porFora.append(ukx(xr=xr, xc=xcs[i]))
+        print(type(porFora[i]))
+        funcs.append( lambda t: porFora[i][int(t * nt)] )
 
     return funcs
 
 
 xcs = [0.2, 0.3, 0.9]
 funcs = createFuncs(xcs, len(xcs))
-for i in range(nt):
-    print(funcs[0](i*deltaT), funcs[1](i*deltaT), funcs[2](i*deltaT))
-
-print(funcs[0](0.2), funcs[1](0.2), funcs[2](0.2))
+# for i in range(nt):
+    # print(funcs[0](i*deltaT), funcs[1](i*deltaT), funcs[2](i*deltaT))
+#
+# print(funcs[0](0.2), funcs[1](0.2), funcs[2](0.2))
 
 # B, c = linearSystem(len(xcs), funcs, funDr, deltaT)
 # print(B)
