@@ -34,15 +34,6 @@ def linearSystem(K, funcs, dr, deltaT, ti, tf):
 def readNPY(name):
     return np.load(name)
 
-
-nt = 1000
-dr = readNPY("dr10.npy")
-def funDr(s):
-    pos = int(s * nt)
-    return dr[pos]
-#dr = (lambda )
-
-
 def ukx(xr, xc):
     j = int( xr / deltaX )
 
@@ -70,28 +61,45 @@ def createFuncs(xcs, K):
 
     return funcs
 
+nt = 2000
 deltaT = 1 / nt
-deltaX = 0.01
-nx = int(1 / deltaX)
-
+nx = 200
+deltaX = 1 / nx
 c2 = 20
 T = 1
 
-xcs = [0.03, 0.15, 0.17, 0.25, 0.33, 0.34, 0.40, 0.44, 0.51, 0.73]
+# xcs = [0.2, 0.3, 0.9]
+# xcs = [.03, .15, .17, .25, .33, .34, .40, .51, .73]
+xcs = [ 0.1 + 0.025 * (k) for k in range(20) ]
+
+K = len(xcs)
 funcs = createFuncs(xcs, len(xcs))
 
-#dr = readNPY("dr3.npy")
+dr = readNPY("dr" + str(K) + ".npy")
+def funDr(t):
+    pos = int(t * nt)
+    return dr[pos]
+
+# for i in range(K):
+    # aux = []
+    # for j in range(K):
+        # t = 0.9 + j * deltaT
+        # aux.append("{:.1f}".format(funcs[i](t)*1e5))
+    # print(aux)
+
 # A * x = b
-A, b = linearSystem(len(xcs), funcs, funDr, deltaT, 0.9, 1)
+A, b = linearSystem(len(xcs), funcs, funDr, deltaT, ti=0.9, tf=1)
 print(A)
 print(" * ")
 x = m.cholesky(A, b)
 print(x)
 print(" == ")
 print(b)
+print(m.testarRespostaSistemaLinear(A, b, len(xcs), x))
 
-print(m.testarRespostaSistemaLinear(A, b, 10, x))
-print("\n-------------------------\n")
-x = m.metodoSOR(A, b, 10)
-print(x)
-print(m.testarRespostaSistemaLinear(A, b, 10, x))
+
+# print("\n-------------------------\n")
+
+# x = m.metodoSOR(A, b, len(xcs))
+# print(x)
+# print(m.testarRespostaSistemaLinear(A, b, len(xcs), x))
