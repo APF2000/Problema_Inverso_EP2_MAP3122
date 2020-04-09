@@ -34,14 +34,8 @@ def linearSystem(K, funcs, dr, deltaT, ti, tf):
 def readNPY(name):
     return np.load(name)
 
+
 nt = 1000
-deltaT = 1 / nt
-deltaX = 0.01
-nx = int(1 / deltaX)
-
-c2 = 20
-T = 1
-
 dr = readNPY("dr10.npy")
 def funDr(s):
     pos = int(s * nt)
@@ -76,6 +70,12 @@ def createFuncs(xcs, K):
 
     return funcs
 
+deltaT = 1 / nt
+deltaX = 0.01
+nx = int(1 / deltaX)
+
+c2 = 20
+T = 1
 
 xcs = [0.03, 0.15, 0.17, 0.25, 0.33, 0.34, 0.40, 0.44, 0.51, 0.73]
 funcs = createFuncs(xcs, len(xcs))
