@@ -71,19 +71,19 @@ def createFuncs(xcs, K):
     funcs = []
     for i in range(K):
         porFora.append(ukx(xr=xr, xc=xcs[i]))
-        print(type(porFora[i]))
-        funcs.append( lambda t: porFora[i][int(t * nt)] )
+        funcs.append( lambda t, k = i: porFora[k][int(t * nt)] )
 
     return funcs
 
 
 xcs = [0.2, 0.3, 0.9]
 funcs = createFuncs(xcs, len(xcs))
-# for i in range(nt):
-    # print(funcs[0](i*deltaT), funcs[1](i*deltaT), funcs[2](i*deltaT))
-#
-# print(funcs[0](0.2), funcs[1](0.2), funcs[2](0.2))
 
-# B, c = linearSystem(len(xcs), funcs, funDr, deltaT)
-# print(B)
-# print(c)
+# A * x = b
+A, b = linearSystem(len(xcs), funcs, funDr, deltaT)
+print(A)
+print(b)
+x = m.cholesky(A, b)
+print(x)
+
+print(m.testarRespostaSistemaLinear(A, b, 3, x))

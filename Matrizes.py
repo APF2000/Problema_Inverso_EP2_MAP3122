@@ -15,7 +15,7 @@ def somaMatrizes(matrizA,matrizB):
     if(linA != linB or colA != colB):
         return
     else:
-        soma = criarMatriz(linA,colA, False)
+        soma = criarMatriz(linA,colA)
         for i in range(linA):
             for j in range (colA):
                 soma[i][j] = matrizA[i][j] + matrizB[i][j]
@@ -31,7 +31,7 @@ def multiplicacaoMatrizes(matrizA,matrizB): # C = A*B
         return
     else:
         p = linB
-        C = criarMatriz(linA,colB, False)
+        C = criarMatriz(linA, colB)
         for i in range(linA):
             for j in range(colB):
                 soma = 0
@@ -43,7 +43,7 @@ def multiplicacaoMatrizes(matrizA,matrizB): # C = A*B
 def transpostaMatriz(matrizA):
     linA = matrizA.shape[0]
     colA = matrizA.shape[1]
-    transposta = criarMatriz(colA,linA, False)
+    transposta = criarMatriz(colA, linA)
     for i in range(colA):
             for j in range (linA):
                 transposta[i][j] = matrizA[j][i]
@@ -52,7 +52,7 @@ def transpostaMatriz(matrizA):
 def multiplicacaoRealMatriz(matrizA,alfa):
     linA = matrizA.shape[0]
     colA = matrizA.shape[1]
-    matriz = criarMatriz(colA,linA, False)
+    matriz = criarMatriz(colA, linA)
     for i in range(linA):
             for j in range (colA):
                 matriz[i][j] = alfa*matrizA[j][i]
@@ -61,7 +61,7 @@ def multiplicacaoRealMatriz(matrizA,alfa):
 def matrixCholesky(A):
     n = len(A)
     # Cria matriz de zeros
-    ch = criarMatriz(n, n, False)
+    ch = criarMatriz(n, n)
 
     # Primeiro termo
     ch[0][0] = math.sqrt(A[0][0])
@@ -93,7 +93,7 @@ def matrixCholesky(A):
 #   - U : triangular superior
 def sistemaLouU(A, b, isL):
     n = len(A)
-    x = criarMatriz(n, 1, False)
+    x = criarMatriz(n, 1)
 
     #import pdb; pdb.set_trace()
 
@@ -144,7 +144,7 @@ def metodoSOR (matrizA,matrizb,n):
     numIteracoes = 1000
     omega = 1.6
     iteracoes = 0
-    respostas = criarMatriz(n,1,False)
+    respostas = criarMatriz(n, 1)
     print(respostas)
 
     while(iteracoes < 10):
