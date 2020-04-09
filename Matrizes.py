@@ -145,7 +145,7 @@ def metodoSOR (matrizA,matrizb,n):
     omega = 1.6
     iteracoes = 0
     respostas = criarMatriz(n, 1)
-    print(respostas)
+    #print(respostas)
 
     while(iteracoes < 10):
         for i in range(n):

@@ -42,10 +42,11 @@ nx = int(1 / deltaX)
 c2 = 20
 T = 1
 
-dr = readNPY("dr3.npy")
+dr = readNPY("dr10.npy")
 def funDr(s):
     pos = int(s * nt)
     return dr[pos]
+
 
 def ukx(xr, xc):
     j = int( xr / deltaX )
@@ -79,6 +80,7 @@ def createFuncs(xcs, K):
 xcs = [0.2, 0.3, 0.9]
 funcs = createFuncs(xcs, len(xcs))
 
+#dr = readNPY("dr3.npy")
 # A * x = b
 A, b = linearSystem(len(xcs), funcs, funDr, deltaT)
 print(A)
@@ -86,4 +88,8 @@ print(b)
 x = m.cholesky(A, b)
 print(x)
 
+print(m.testarRespostaSistemaLinear(A, b, 3, x))
+print("\n-------------------------\n")
+x = m.metodoSOR(A, b, 3)
+print(x)
 print(m.testarRespostaSistemaLinear(A, b, 3, x))
