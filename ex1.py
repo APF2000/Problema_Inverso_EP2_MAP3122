@@ -5,13 +5,17 @@ import math
 
 EPS = 10e-10
 
-def funcaoF(t, x, c2, xc):
+# Função da fonte
+# Recebe os indices i e j onde se deseja calcular f
+def funcaoF(i, j, c2, xc, nx, nt):
+
+    t = i / nt
 
     betha2 = 10 ** 2
-
     pi2 = (np.pi) ** 2
 
-    if np.absolute(x - xc) > EPS:
+    #import pdb; pdb.set_trace()
+    if j != xc * nx:
         return 0
 
     aux1 = 1000 * c2
@@ -38,15 +42,15 @@ def fillEDOmatrix(nt, nx, alpha, T, matrix, c2, xc):
     deltaX = 1 / nx
     for line in range(2, nt+1):
         for col in range(1, nx):
-            ti = line * deltaT
-            xj = col * deltaX
+            #ti = line * deltaT
+            #xj = col * deltaX
 
             term1 = -matrix[line-2][col]
             term2  = 2 * (1 - alpha**2) * matrix[line-1][col]
             term3A = matrix[line-1][col+1]
             term3B = matrix[line-1][col-1]
             term3  = (alpha**2) * (term3A + term3B)
-            term4  = (deltaT **2) * funcaoF(ti, xj, c2, xc)
+            term4  = (deltaT **2) * funcaoF(line, col, c2, xc, nx, nt)
 
             matrix[line][col] = term1 + term2 + term3 + term4
     return matrix
@@ -96,9 +100,9 @@ def plotArt(t):
     plt.show()
 #Parte principal
 #plotArt(0.1)
-plotArt(0.2)
+#plotArt(0.2)
 #plotArt(0.3)
 #plotArt(0.4)
-plotArt(0.5)
+#plotArt(0.5)
 #plotArt(0.6)
 #print(EDO(nt=nt, deltaX=deltaX, c2=c2, T=T, i=70, j=50, firstTime=True)[0])
