@@ -15,27 +15,15 @@ def funcaoF(i, j, c2, xc, nx, nt):
     pi2 = (np.pi) ** 2
 
     #import pdb; pdb.set_trace()
-    if j != xc * nx:
+    if j != (xc * nx):
         return 0
 
     aux1 = 1000 * c2
-    aux2 = 1 - 2*betha2*pi2*(t ** 2)
+    aux2 = 1 - 2 * betha2 * pi2 * (t ** 2)
     aux3 = np.exp(- betha2 * pi2 * (t ** 2))
 
     return aux1 * aux2 * aux3
 
-def criarMatrizBordas(nt, nx):
-    matrix = m.criarMatriz(nt + 1, nx+1)
-
-    for i in range(nx + 1):
-        matrix[0][i] = 0
-        matrix[1][i] = 0
-
-    for i in range(nt + 1):
-        matrix[i][0] = 0
-        matrix[i][nx] = 0
-
-    return matrix
 
 def fillEDOmatrix(nt, nx, alpha, T, matrix, c2, xc):
     deltaT = T / nt
@@ -50,7 +38,7 @@ def fillEDOmatrix(nt, nx, alpha, T, matrix, c2, xc):
             term3A = matrix[line-1][col+1]
             term3B = matrix[line-1][col-1]
             term3  = (alpha**2) * (term3A + term3B)
-            term4  = (deltaT **2) * funcaoF(line, col, c2, xc, nx, nt)
+            term4  = (deltaT **2) * funcaoF(line - 1, col, c2, xc, nx, nt)
 
             matrix[line][col] = term1 + term2 + term3 + term4
     return matrix
@@ -62,10 +50,10 @@ def EDO(i, j, matrix, nt, nx, c2, T, firstTime, xc):
 
     deltaT = T / nt
     deltaX = 1 / nx
-    alpha = math.sqrt(c2) * deltaT / deltaX
+    alpha = math.sqrt(c2) * (deltaT / deltaX)
 
     if firstTime:
-        matrix = criarMatrizBordas(nt, nx)
+        matrix = m.criarMatriz(nt + 1, nx + 1)
         matrix = fillEDOmatrix(nt, nx, alpha, T, matrix, c2, xc)
 
     return matrix[i][j], matrix
