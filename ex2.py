@@ -62,10 +62,9 @@ def erroReconstrucao(Ak_esperados, Ak_obtidos, K):
 
 # Calcula a função custo para a solução encontrada
 def residuoReconstrucao(ti, tf, Aks, dr, funcs, K):
-    for i in range(K):
-        Ak = (lambda t, k = i : Aks[k] )
-        for j in range(K):
-            pass
+    f = (lambda t : sum([Aks[j] * funcs[j](t) for j in range(K)]) - dr(t))
+    result = integral(f, f, ti, tf, deltaT)
+    return float( result / ( 2 * (tf - ti) ) )
 
 # Apresenta o sistema linear em forma matricial
 def presentSystem(B, c, K):
@@ -159,20 +158,27 @@ if __name__ == "__main__":
     B, c = linearSystem(K, funcs, funDr, deltaT, ti, tf)
     presentSystem(B, c, K)
 
-    print("\nUsando o método Cholesky, a resposta foi:\n")
+    print("\nUsando o método Cholesky, a resposta foi:")
     a = m.cholesky(B, c)
     presentResult(a, K)
     obtido = a
 
+    print("\nO resíduo do Cholesky foi ")
+    residuo = (residuoReconstrucao(ti, tf, obtido, funDr, funcs, K))
+    print(residuo)
 
     if K != 20:
-        print("O erro de reconstrução do Cholesky foi ")
+        print("\nO erro de reconstrução do Cholesky foi ")
         print(erroReconstrucao(esperado, obtido, K))
 
-        print("\n-------------------------\n")
-        print("Usando o método SOR, a resposta foi:")
+        print("\n-------------------------")
+        print("\nUsando o método SOR, a resposta foi:")
         a = m.metodoSOR(B, c, len(xcs))
         presentResult(a, K)
 
-        print("O erro de reconstrução do SOR foi ")
+        print("\nO resíduo do SOR foi ")
+        residuo = (residuoReconstrucao(ti, tf, a, funDr, funcs, K))
+        print(residuo)
+
+        print("\nO erro de reconstrução do SOR foi ")
         print(erroReconstrucao(esperado, a, K))
