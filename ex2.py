@@ -31,8 +31,6 @@ def linearSystem(K, funcs, dr, deltaT, ti, tf):
 
     return B, c
 
-def readNPY(name):
-    return np.load(name)
 
 def ukx(xr, xc):
     j = int( xr / deltaX )
@@ -57,8 +55,7 @@ def createFuncs(xcs, K):
     funcs = []
     for i in range(K):
         porFora.append(ukx(xr=xr, xc=xcs[i]))
-        funcs.append( lambda t, k = i: porFora[k][int(t * nt)] )
-
+        funcs.append(lambda t, k = i: porFora[k][int(t * nt)])
     return funcs
 
 nt = 2000
@@ -70,10 +67,19 @@ T = 1
 
 # xcs = [0.2, 0.3, 0.9]
 # xcs = [.03, .15, .17, .25, .33, .34, .40, .51, .73]
-xcs = [ 0.1 + 0.025 * (k) for k in range(20) ]
+xcs = ([ 0.1 + 0.025 * (k) for k in range(20) ])
+#xcs = [0.15]
+
+# Dando problema nas linhas 3, 8, 9, 14, 15, 19, 20
+#xcs = [0.15, 0.275, 0.3, 0.425, 0.45, 0.55, 0.575]
 
 K = len(xcs)
 funcs = createFuncs(xcs, len(xcs))
+#for i in range(K):
+    #print(ukx(0.7, 0.275))
+
+def readNPY(name):
+    return np.load(name)
 
 dr = readNPY("dr" + str(K) + ".npy")
 def funDr(t):
@@ -87,6 +93,8 @@ def funDr(t):
         # aux.append("{:.1f}".format(funcs[i](t)*1e5))
     # print(aux)
 
+
+
 # A * x = b
 A, b = linearSystem(len(xcs), funcs, funDr, deltaT, ti=0.9, tf=1)
 print(A)
@@ -98,8 +106,8 @@ print(b)
 print(m.testarRespostaSistemaLinear(A, b, len(xcs), x))
 
 
-# print("\n-------------------------\n")
+print("\n-------------------------\n")
 
-# x = m.metodoSOR(A, b, len(xcs))
-# print(x)
-# print(m.testarRespostaSistemaLinear(A, b, len(xcs), x))
+x = m.metodoSOR(A, b, len(xcs))
+print(x)
+print(m.testarRespostaSistemaLinear(A, b, len(xcs), x))

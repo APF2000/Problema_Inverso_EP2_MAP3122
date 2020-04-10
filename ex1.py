@@ -14,8 +14,10 @@ def funcaoF(i, j, c2, xc, nx, nt):
     betha2 = 10 ** 2
     pi2 = (np.pi) ** 2
 
+    #print("funf, xc=", xc, "nx=", nx, "xc*nx=",xc*nx)
+
     #import pdb; pdb.set_trace()
-    if j != (xc * nx):
+    if j != int(xc * nx):
         return 0
 
     aux1 = 1000 * c2
@@ -39,6 +41,7 @@ def fillEDOmatrix(nt, nx, alpha, T, matrix, c2, xc):
             term3B = matrix[line-1][col-1]
             term3  = (alpha**2) * (term3A + term3B)
             term4  = (deltaT **2) * funcaoF(line - 1, col, c2, xc, nx, nt)
+            #print("line = ", line, "col= ", col, "term4 = ", term4)
 
             matrix[line][col] = term1 + term2 + term3 + term4
     return matrix
@@ -61,10 +64,10 @@ def EDO(i, j, matrix, nt, nx, c2, T, firstTime, xc):
 
 c2 = 20
 T = 1
-nt = 1500 #inicial
+nt = 2000 #inicial
 deltaT = 1 / nt
 nx = 200
-deltaX = 1 / nx
+deltaX = 1 / nx # 0.005
 
 def plotArt(t):
     valoresx = np.array([])
@@ -84,9 +87,32 @@ def plotArt(t):
         firstTime = False
 
     plt.plot(valoresx, valoresy)
-    plt.ylim(-0.6, 0.6)
-    plt.show()
-#Parte principal
+    #plt.ylim(-0.6, 0.6)
+    plt.grid(True)
+    plt.ylim(-1e-3, 1e-3)
+    plt.xlim(0.85, 1.1)
+    plt.savefig("todos.jpeg")
+    #plt.show()
+
+# for k in range(20):
+    # if k==3 or k==8 or k==9 or k==14 or k==15 or k==19 or k==20:
+        # plotArt(0.1 + 0.025 * (k))
+
+#matrix = EDO(nt, nx, [], nt, nx, c2, T, True, xc=0.275)[1]
+# for i in range(nt+1):
+    # list = np.array([])
+    # for j in range(nx+1):
+        # list = np.append(list, "{:.1e}".format(matrix[i][j]))
+    # print("linha ", i, list)
+
+# i = 1400
+# list = np.array([])
+# for j in range(nx+1):
+    # list = np.append(list, "{:.1e}".format(matrix[i][j]))
+# print("caso = ", k)
+# print(list)
+# print()
+
 #plotArt(0.1)
 #plotArt(0.2)
 #plotArt(0.3)
