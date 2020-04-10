@@ -65,49 +65,51 @@ deltaX = 1 / nx
 c2 = 20
 T = 1
 
-#xcs = [0.2, 0.3, 0.9]
-xcs = [.03, .15, .17, .25, .33, .34, .40, 0.44, .51, .73]
-# xcs = ([ 0.1 + 0.025 * (k) for k in range(20) ])
-#xcs = [0.15]
+if __name__ == "__main__":
 
-# Dando problema nas linhas 3, 8, 9, 14, 15, 19, 20
-#xcs = [0.15, 0.275, 0.3, 0.425, 0.45, 0.55, 0.575]
+    xcs = [0.2, 0.3, 0.9]
+    #xcs = [.03, .15, .17, .25, .33, .34, .40, 0.44, .51, .73]
+    #xcs = ([ 0.1 + 0.025 * (k) for k in range(20) ])
+    #xcs = [0.15]
 
-K = len(xcs)
-funcs = createFuncs(xcs, len(xcs))
-#for i in range(K):
-    #print(ukx(0.7, 0.275))
+    # Dando problema nas linhas 3, 8, 9, 14, 15, 19, 20
+    #xcs = [0.15, 0.275, 0.3, 0.425, 0.45, 0.55, 0.575]
 
-def readNPY(name):
-    return np.load(name)
+    K = len(xcs)
+    funcs = createFuncs(xcs, len(xcs))
+    #for i in range(K):
+        #print(ukx(0.7, 0.275))
 
-dr = readNPY("dr" + str(K) + ".npy")
-def funDr(t):
-    pos = int(t * nt)
-    return dr[pos]
+    def readNPY(name):
+        return np.load(name)
 
-# for i in range(K):
-    # aux = []
-    # for j in range(K):
-        # t = 0.9 + j * deltaT
-        # aux.append("{:.1f}".format(funcs[i](t)*1e5))
-    # print(aux)
+    dr = readNPY("dr" + str(K) + ".npy")
+    def funDr(t):
+        pos = int(t * nt)
+        return dr[pos]
 
-
-
-# A * x = b
-A, b = linearSystem(len(xcs), funcs, funDr, deltaT, ti=0.9, tf=1)
-print(A)
-print(" * ")
-x = m.cholesky(A, b)
-print(x)
-print(" == ")
-print(b)
-print(m.testarRespostaSistemaLinear(A, b, len(xcs), x))
+    # for i in range(K):
+        # aux = []
+        # for j in range(K):
+            # t = 0.9 + j * deltaT
+            # aux.append("{:.1f}".format(funcs[i](t)*1e5))
+        # print(aux)
 
 
-print("\n-------------------------\n")
 
-x = m.metodoSOR(A, b, len(xcs))
-print(x)
-print(m.testarRespostaSistemaLinear(A, b, len(xcs), x))
+    # A * x = b
+    A, b = linearSystem(len(xcs), funcs, funDr, deltaT, ti=0.9, tf=1)
+    print(A)
+    print(" * ")
+    x = m.cholesky(A, b)
+    print(x)
+    print(" == ")
+    print(b)
+    print(m.testarRespostaSistemaLinear(A, b, len(xcs), x))
+
+
+    print("\n-------------------------\n")
+
+    x = m.metodoSOR(A, b, len(xcs))
+    print(x)
+    print(m.testarRespostaSistemaLinear(A, b, len(xcs), x))

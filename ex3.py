@@ -51,37 +51,38 @@ def drRuidoLambda(ni):
     ruido = drRuido(ni)
     return (lambda t : ruido[int(t * nt)])
 
-nt = 1000
-nx = 100
-deltaT = 1 / nt
-ni = 1e-4
-K = 10
-ti, tf = 0.9, 1.0
+if __name__ == "__main__":
+    nt = 1000
+    nx = 100
+    deltaT = 1 / nt
+    ni = 1e-4
+    K = 10
+    ti, tf = 0.9, 1.0
 
-print("foi0")
-ruido = (drRuido(ni))
-print("foi1")
-t = [ i / nt for i in range(nt + 1) ]
-print("foi2")
-semRuido = np.load("dr10.npy")
-print("foi3")
+    print("foi0")
+    ruido = (drRuido(ni))
+    print("foi1")
+    t = [ i / nt for i in range(nt + 1) ]
+    print("foi2")
+    semRuido = np.load("dr10.npy")
+    print("foi3")
 
-# plotSismogramas(ruido, semRuido, t)
-#print(nivelRuido(1e-3, 0.5, 1))
+    # plotSismogramas(ruido, semRuido, t)
+    #print(nivelRuido(1e-3, 0.5, 1))
 
 
-ruido = drRuidoLambda(ni)
+    ruido = drRuidoLambda(ni)
 
-xcs = [.03, .15, .17, .25, .33, .34, .40, .44, .51, .73]
-funcs = ex2.createFuncs(xcs, K)
+    xcs = [.03, .15, .17, .25, .33, .34, .40, .44, .51, .73]
+    funcs = ex2.createFuncs(xcs, K)
 
-# A * x = b
-A, b = ex2.linearSystem(K, funcs, ruido, deltaT, ti, tf)
+    # A * x = b
+    A, b = ex2.linearSystem(K, funcs, ruido, deltaT, ti, tf)
 
-print(A)
-print(" * ")
-x = m.cholesky(A, b)
-print(x)
-print(" == ")
-print(b)
-print(m.testarRespostaSistemaLinear(A, b, len(xcs), x))
+    print(A)
+    print(" * ")
+    x = m.cholesky(A, b)
+    print(x)
+    print(" == ")
+    print(b)
+    print(m.testarRespostaSistemaLinear(A, b, len(xcs), x))

@@ -61,14 +61,6 @@ def EDO(i, j, matrix, nt, nx, c2, T, firstTime, xc):
 
     return matrix[i][j], matrix
 
-
-c2 = 20
-T = 1
-nt = 2000 #inicial
-deltaT = 1 / nt
-nx = 200
-deltaX = 1 / nx # 0.005
-
 def plotArt(t):
     valoresx = np.array([])
     valoresy = np.array([])
@@ -87,18 +79,21 @@ def plotArt(t):
         firstTime = False
 
     plt.plot(valoresx, valoresy)
-    #plt.ylim(-0.6, 0.6)
     plt.grid(True)
-    plt.ylim(-1e-3, 1e-3)
-    plt.xlim(0.85, 1.1)
     plt.savefig("todos.jpeg")
-    #plt.show()
+    plt.show()
 
-
-#plotArt(0.1)
-#plotArt(0.2)
-#plotArt(0.3)
-#plotArt(0.4)
-#plotArt(0.5)
-#plotArt(0.6)
-#print(EDO(nt=nt, deltaX=deltaX, c2=c2, T=T, i=70, j=50, firstTime=True)[0])
+if __name__ == "__main__":
+    c2 = 10
+    T = 1
+    nt = 350
+    deltaT = 1 / nt
+    nx = 100
+    deltaX = 1 / nx
+    #plotArt(0.1)
+    plotArt(0.2)
+    #plotArt(0.3)
+    #plotArt(0.4)
+    plotArt(0.5)
+    #plotArt(0.6)
+    #print(EDO(nt=nt, deltaX=deltaX, c2=c2, T=T, i=70, j=50, firstTime=True)[0])
