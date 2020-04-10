@@ -3,10 +3,13 @@ import math
 import numpy as np
 import ex1
 
+# Calcula a integral do produto das funções u1 e u2
+# Os limites da integral são s0 e sN, e o passo entre
+# as áreas somadas é deltaT
+# Aqui a aproximação é feita usando a Fórmula dos Trapézios
 def integral(u1, u2, s0, sN, deltaT):
     n = int( (sN - s0) / deltaT )
     sum = 0
-    #import pdb; pdb.set_trace()
     for i in range(1, n):
         si = s0 + i * deltaT
         sum += (u1(si) * u2(si))
@@ -16,6 +19,8 @@ def integral(u1, u2, s0, sN, deltaT):
 
     return sum * deltaT / 2
 
+# Cria um sistema linear a partir das integrais
+# das funções Ui obtidas e o dr fornecido
 def linearSystem(K, funcs, dr, deltaT, ti, tf):
     B = m.criarMatriz(K, K)
     c = m.criarMatriz(K, 1)
@@ -31,7 +36,9 @@ def linearSystem(K, funcs, dr, deltaT, ti, tf):
 
     return B, c
 
-
+# Retorna o vetor de Ui(t, xr)
+# Esse vetor será utilizado para o cálculo
+# das integrais (ver função createFuncs)
 def ukx(xr, xc):
     j = int( xr / deltaX )
 
