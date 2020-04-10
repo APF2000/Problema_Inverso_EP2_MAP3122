@@ -6,7 +6,7 @@ import ex1
 # Calcula a integral do produto das funções u1 e u2
 # Os limites da integral são s0 e sN, e o passo entre
 # as áreas somadas é deltaT
-# Aqui a aproximação é feita usando a Fórmula dos Trapézios
+# Aqui a aproximação é feita usando a Fórmula dos Trapézios Composta
 def integral(u1, u2, s0, sN, deltaT):
     n = int( (sN - s0) / deltaT )
     sum = 0
@@ -36,8 +36,9 @@ def linearSystem(K, funcs, dr, deltaT, ti, tf):
 
     return B, c
 
-# Retorna o vetor de Ui(t, xr)
-# Esse vetor será utilizado para o cálculo
+# Retorna a coluna correspondente ao xr, obtida a partir
+# da matriz gerada pela resolução da EDO para Ui(t, x)
+# Esse vetor-coluna será utilizado para o cálculo
 # das integrais (ver função createFuncs)
 def ukx(xr, xc):
     j = int( xr / deltaX )
@@ -98,9 +99,9 @@ def presentSystem(B, c, K):
         print(line)
 
 # Apresenta a solução do sistema na forma matricial
-def presentResult(a, K):
+def presentResult(vec, K):
     for i in range(K):
-        line = " | {:10.5f} |".format(a[i][0])
+        line = " | {:10.5f} |".format(vec[i][0])
         print(line)
 
 # Cria uma lista de funcoes a partir de um dos parametros
@@ -112,6 +113,16 @@ def createFuncs(xcs, K):
         porFora.append(ukx(xr=xr, xc=xcs[i]))
         funcs.append(lambda t, k = i: porFora[k][int(t * nt)])
     return funcs
+
+# Ordena um numpyndarray
+# Fizemos esta função porque usar simplesmente
+# o método sort() não estava funcionando
+def numpyToList(vec, K):
+    new =[]
+    for i in range(K):
+        new.append(vec[i])
+    new.sort()
+    return new
 
 if __name__ == "__main__":
     K = int(input("Para qual valor de K? "))
@@ -132,11 +143,13 @@ if __name__ == "__main__":
         import sys
         sys.exit()
 
+    # Parâmetros para a EDO e o sistema linear
     deltaT = 1 / nt
     deltaX = 1 / nx
     T = 1
     xr = 0.7
 
+    # Valores de xc (mudam a fonte) para cada uma das 3 situações requeridas
     xcs = {
         3 : [0.2, 0.3, 0.9],
         10 : [.03, .15, .17, .25, .33, .34, .40, 0.44, .51, .73],
@@ -144,17 +157,20 @@ if __name__ == "__main__":
     }
     xcs = xcs[K]
 
+    # Aqui temos um vetor com as funções uk(t, xr=0.7)
     funcs = createFuncs(xcs, len(xcs))
 
+    # Lê o arquivo dr correspondente
     def readNPY(name):
         return np.load(name)
 
+    # Definimos aqui a função dr
     dr = readNPY("dr" + str(K) + ".npy")
     def funDr(t):
         pos = int(t * nt)
         return dr[pos]
 
-    # B * a = c
+    # B * a = c; método Cholesky
     B, c = linearSystem(K, funcs, funDr, deltaT, ti, tf)
     presentSystem(B, c, K)
 
@@ -172,6 +188,7 @@ if __name__ == "__main__":
         print(erroReconstrucao(esperado, obtido, K))
 
         print("\n-------------------------")
+        # B * a = c; método SOR
         print("\nUsando o método SOR, a resposta foi:")
         a = m.metodoSOR(B, c, len(xcs))
         presentResult(a, K)
@@ -182,3 +199,7 @@ if __name__ == "__main__":
 
         print("\nO erro de reconstrução do SOR foi ")
         print(erroReconstrucao(esperado, a, K))
+    else:
+        print("\nAs raízes obtidas, em ordem crescente são")
+        obtido = np.array(numpyToList(obtido, K))
+        presentResult(obtido, K)
