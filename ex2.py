@@ -58,16 +58,16 @@ def createFuncs(xcs, K):
         funcs.append(lambda t, k = i: porFora[k][int(t * nt)])
     return funcs
 
-nt = 2000
+nt = 1000
 deltaT = 1 / nt
-nx = 200
+nx = 100
 deltaX = 1 / nx
 c2 = 20
 T = 1
 
 #xcs = [0.2, 0.3, 0.9]
-#xcs = [.03, .15, .17, .25, .33, .34, .40, 0.44, .51, .73]
-xcs = ([ 0.1 + 0.025 * (k) for k in range(20) ])
+xcs = [.03, .15, .17, .25, .33, .34, .40, 0.44, .51, .73]
+# xcs = ([ 0.1 + 0.025 * (k) for k in range(20) ])
 #xcs = [0.15]
 
 # Dando problema nas linhas 3, 8, 9, 14, 15, 19, 20
