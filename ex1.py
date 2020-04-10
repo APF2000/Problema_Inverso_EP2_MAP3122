@@ -2,6 +2,7 @@ import numpy as np
 import Matrizes as m
 import matplotlib.pyplot as plt
 import math
+import os
 
 EPS = 10e-10
 
@@ -79,21 +80,48 @@ def plotArt(t):
         firstTime = False
 
     plt.plot(valoresx, valoresy)
+    nome = "Ex1 : c^2 = " + str(c2) + \
+                    ", nt = " + str(nt) + \
+                    ", nx = " + str(nx) + \
+                    ", t = " + str(t)
+    plt.title(nome,fontweight="bold")
     plt.grid(True)
-    plt.savefig("todos.jpeg")
-    plt.show()
+    plt.xlabel("x")
+    plt.ylabel("u(x, " + str(t) + ")")
+
+    plt.savefig("Imagens/" + nome + ".jpeg")
+    plt.clf()
 
 if __name__ == "__main__":
-    c2 = 10
+    c2, nx, nt = 10, 100, 350
     T = 1
-    nt = 350
     deltaT = 1 / nt
-    nx = 100
     deltaX = 1 / nx
-    #plotArt(0.1)
-    plotArt(0.2)
-    #plotArt(0.3)
-    #plotArt(0.4)
-    plotArt(0.5)
-    #plotArt(0.6)
-    #print(EDO(nt=nt, deltaX=deltaX, c2=c2, T=T, i=70, j=50, firstTime=True)[0])
+
+    try:
+        os.mkdir("Imagens")
+    except OSError:
+        print("Não foi possível criar a pasta Imagens")
+    else:
+        print("As imagens do exercício 1 estão na pasta Imagens")
+
+    while(nt > 300):
+        plotArt(0.5)
+        nt -= 10
+    nt = 318
+    while(nt > 314):
+        plotArt(0.5)
+        nt -= 1
+
+    c2, nt = 20, 500
+    while(nt > 430):
+        plotArt(0.5)
+        nt -= 10
+    nt = 450
+    while(nt > 440):
+        plotArt(0.5)
+        nt -= 1
+
+    c2, nx, nt = 20, 200, 2500
+    for i in range(6):
+        plotArt((i + 1) * 0.1)
