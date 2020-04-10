@@ -53,6 +53,20 @@ def ukx(xr, xc):
         firstTime = False
     return x
 
+# Retorna o erro da solução encontrada
+def erroReconstrucao(Ak_esperados, Ak_obtidos, K):
+    sum = 0
+    for i in range(K):
+        sum += (Ak_obtidos[i] - Ak_esperados[i]) ** 2
+    return math.sqrt(sum)
+
+# Calcula a função custo para a solução encontrada
+def residuoReconstrucao(ti, tf, Aks, dr, funcs, K):
+    for i in range(K):
+        Ak = (lambda t, k = i : Aks[k] )
+        for j in range(K):
+            pass
+
 # Apresenta o sistema linear em forma matricial
 def presentSystem(B, c, K):
     for i in range(K):
@@ -90,7 +104,6 @@ def presentResult(a, K):
         line = " | {:10.5f} |".format(a[i][0])
         print(line)
 
-
 # Cria uma lista de funcoes a partir de um dos parametros
 # do vetor xc fornecido, com K posições
 def createFuncs(xcs, K):
@@ -107,9 +120,11 @@ if __name__ == "__main__":
     if K == 3:
         c2, nt, nx = 20, 1000, 100
         ti, tf = 0.5, 1.0
+        esperado = [0.1, 40.0, 7.5]
     elif K == 10:
         c2, nt, nx = 20, 1000, 100
         ti, tf = 0.9, 1.0
+        esperado = [7.3, 2.4, 5.7, 4.7, 0.1, 20.0, 5.1, 6.1, 2.8, 15.3]
     elif K == 20:
         c2, nt, nx = 20, 2000, 200
         ti, tf = 0.9, 1.0
@@ -147,9 +162,17 @@ if __name__ == "__main__":
     print("\nUsando o método Cholesky, a resposta foi:\n")
     a = m.cholesky(B, c)
     presentResult(a, K)
+    obtido = a
+
 
     if K != 20:
+        print("O erro de reconstrução do Cholesky foi ")
+        print(erroReconstrucao(esperado, obtido, K))
+
         print("\n-------------------------\n")
         print("Usando o método SOR, a resposta foi:")
         a = m.metodoSOR(B, c, len(xcs))
         presentResult(a, K)
+
+        print("O erro de reconstrução do SOR foi ")
+        print(erroReconstrucao(esperado, a, K))
