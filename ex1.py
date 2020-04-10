@@ -94,24 +94,6 @@ def plotArt(t):
     plt.savefig("todos.jpeg")
     #plt.show()
 
-# for k in range(20):
-    # if k==3 or k==8 or k==9 or k==14 or k==15 or k==19 or k==20:
-        # plotArt(0.1 + 0.025 * (k))
-
-#matrix = EDO(nt, nx, [], nt, nx, c2, T, True, xc=0.275)[1]
-# for i in range(nt+1):
-    # list = np.array([])
-    # for j in range(nx+1):
-        # list = np.append(list, "{:.1e}".format(matrix[i][j]))
-    # print("linha ", i, list)
-
-# i = 1400
-# list = np.array([])
-# for j in range(nx+1):
-    # list = np.append(list, "{:.1e}".format(matrix[i][j]))
-# print("caso = ", k)
-# print(list)
-# print()
 
 #plotArt(0.1)
 #plotArt(0.2)
