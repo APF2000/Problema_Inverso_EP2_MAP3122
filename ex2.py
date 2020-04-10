@@ -46,39 +46,84 @@ def ukx(xr, xc):
         firstTime = False
     return x
 
+# Apresenta o sistema linear em forma matricial
+def presentSystem(B, c, K):
+    for i in range(K):
+        line = ""
+        bLine = " |"
+        equals, times = " == ", " * "
+        space3, space4 = "   ", "    "
+        for j in range(K):
+            bLine += " {:10.3e}".format(B[i][j])
+
+        bLine += " | "
+        aLine = " | a" + str(i) + " |"
+
+        line += bLine
+
+        if( i == int(K / 2) or i == int(K / 2 - 1) and K % 2 == 0):
+            line += times
+        else:
+            line += space3
+        line += aLine
+
+        if( i == int(K / 2) or i == int(K / 2 - 1) and K % 2 == 0):
+            line += equals
+        else:
+            line += space4
+
+        cLine = "|" + " {:10.3e}".format(c[i][0]) + " |"
+        line += cLine
+
+        print(line)
+
+# Apresenta a solução do sistema na forma matricial
+def presentResult(a, K):
+    for i in range(K):
+        line = " | {:10.5f} |".format(a[i][0])
+        print(line)
+
 
 # Cria uma lista de funcoes a partir de um dos parametros
 # do vetor xc fornecido, com K posições
 def createFuncs(xcs, K):
     porFora = []
-    xr = 0.7
     funcs = []
     for i in range(K):
         porFora.append(ukx(xr=xr, xc=xcs[i]))
         funcs.append(lambda t, k = i: porFora[k][int(t * nt)])
     return funcs
 
-nt = 1000
-deltaT = 1 / nt
-nx = 100
-deltaX = 1 / nx
-c2 = 20
-T = 1
-
 if __name__ == "__main__":
+    K = int(input("Para qual valor de K? "))
 
-    xcs = [0.2, 0.3, 0.9]
-    #xcs = [.03, .15, .17, .25, .33, .34, .40, 0.44, .51, .73]
-    #xcs = ([ 0.1 + 0.025 * (k) for k in range(20) ])
-    #xcs = [0.15]
+    if K == 3:
+        c2, nt, nx = 20, 1000, 100
+        ti, tf = 0.5, 1.0
+    elif K == 10:
+        c2, nt, nx = 20, 1000, 100
+        ti, tf = 0.9, 1.0
+    elif K == 20:
+        c2, nt, nx = 20, 2000, 200
+        ti, tf = 0.9, 1.0
+    else:
+        print("Este valor de K é inválido")
+        import sys
+        sys.exit()
 
-    # Dando problema nas linhas 3, 8, 9, 14, 15, 19, 20
-    #xcs = [0.15, 0.275, 0.3, 0.425, 0.45, 0.55, 0.575]
+    deltaT = 1 / nt
+    deltaX = 1 / nx
+    T = 1
+    xr = 0.7
 
-    K = len(xcs)
+    xcs = {
+        3 : [0.2, 0.3, 0.9],
+        10 : [.03, .15, .17, .25, .33, .34, .40, 0.44, .51, .73],
+        20 : [ 0.1 + 0.025 * (k) for k in range(20) ]
+    }
+    xcs = xcs[K]
+
     funcs = createFuncs(xcs, len(xcs))
-    #for i in range(K):
-        #print(ukx(0.7, 0.275))
 
     def readNPY(name):
         return np.load(name)
@@ -88,28 +133,16 @@ if __name__ == "__main__":
         pos = int(t * nt)
         return dr[pos]
 
-    # for i in range(K):
-        # aux = []
-        # for j in range(K):
-            # t = 0.9 + j * deltaT
-            # aux.append("{:.1f}".format(funcs[i](t)*1e5))
-        # print(aux)
+    # B * a = c
+    B, c = linearSystem(K, funcs, funDr, deltaT, ti, tf)
+    presentSystem(B, c, K)
 
+    print("\nUsando o método Cholesky, a resposta foi:\n")
+    a = m.cholesky(B, c)
+    presentResult(a, K)
 
-
-    # A * x = b
-    A, b = linearSystem(len(xcs), funcs, funDr, deltaT, ti=0.9, tf=1)
-    print(A)
-    print(" * ")
-    x = m.cholesky(A, b)
-    print(x)
-    print(" == ")
-    print(b)
-    print(m.testarRespostaSistemaLinear(A, b, len(xcs), x))
-
-
-    print("\n-------------------------\n")
-
-    x = m.metodoSOR(A, b, len(xcs))
-    print(x)
-    print(m.testarRespostaSistemaLinear(A, b, len(xcs), x))
+    if K != 20:
+        print("\n-------------------------\n")
+        print("Usando o método SOR, a resposta foi:")
+        a = m.metodoSOR(B, c, len(xcs))
+        presentResult(a, K)
