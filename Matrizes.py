@@ -141,11 +141,10 @@ def cholesky(A, b):
     return x
 
 def metodoSOR (matrizA,matrizb,n):
-    numIteracoes = 1000
+    numIteracoes = 10000
     omega = 1.6
     iteracoes = 0
     respostas = criarMatriz(n, 1)
-    #print(respostas)
 
     while(iteracoes < 10):
         for i in range(n):
@@ -154,20 +153,18 @@ def metodoSOR (matrizA,matrizb,n):
                 somatorias = matrizA[i][j]*respostas[j][0] + somatorias
             for j in range(i+1,n):
                 somatorias = matrizA[i][j]*respostas[j][0] + somatorias
-            #print(somatorias)
             respostas[i][0] = (1/matrizA[i][i])*(matrizb[i][0]-somatorias)
         iteracoes += 1
 
     iteracoes = 0
 
-    while(iteracoes < 1000):
+    while(iteracoes < numIteracoes):
         for i in range(n):
             somatorias = 0
             for j in range(i):
                 somatorias = matrizA[i][j]*respostas[j][0] + somatorias
             for j in range(i+1,n):
                 somatorias = matrizA[i][j]*respostas[j][0] + somatorias
-            #print(somatorias)
             respostas[i][0] = (1-omega)*respostas[i][0] + (omega/matrizA[i][i])*(matrizb[i][0]-somatorias)
         iteracoes += 1
     return respostas

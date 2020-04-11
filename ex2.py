@@ -3,6 +3,15 @@ import math
 import numpy as np
 import ex1
 
+# Variáveis globais, a serem usadas no ex3
+xr = 0.7
+c2 = 20
+nt = 1000
+deltaT = 1 / nt
+nx = 100
+deltaX = 1 / nx
+T = 1
+
 # Calcula a integral do produto das funções u1 e u2
 # Os limites da integral são s0 e sN, e o passo entre
 # as áreas somadas é deltaT

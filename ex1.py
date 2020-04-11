@@ -85,7 +85,7 @@ def plotArt(t):
     plt.xlabel("x")
     plt.ylabel("u(x, " + str(t) + ")")
 
-    plt.savefig("Imagens/" + nome + ".jpeg")
+    plt.savefig("ImagensEx1/" + nome + ".jpeg")
     plt.clf()
 
 
@@ -98,11 +98,11 @@ if __name__ == "__main__":
     deltaX = 1 / nx
 
     try:
-        os.mkdir("Imagens")
+        os.mkdir("ImagensEx1")
     except OSError:
-        print("Não foi possível criar a pasta Imagens")
+        print("A pasta ImagensEx1 ou já existe ou não pôde ser criada")
     else:
-        print("As imagens do exercício 1 estão na pasta Imagens")
+        print("As imagens do exercício 1 estão na pasta ImagensEx1")
 
     while(nt > 300):
         plotArt(0.5)
