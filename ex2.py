@@ -7,10 +7,10 @@ import ex1
 xr = 0.7
 c2 = 20
 nt = 1000
-deltaT = 1 / nt
+T = 1
+deltaT = T / nt
 nx = 100
 deltaX = 1 / nx
-T = 1
 
 # Calcula a integral do produto das funções u1 e u2
 # Os limites da integral são s0 e sN, e o passo entre
@@ -153,7 +153,7 @@ if __name__ == "__main__":
         sys.exit()
 
     # Parâmetros para a EDO e o sistema linear
-    deltaT = 1 / nt
+    deltaT = T / nt
     deltaX = 1 / nx
     T = 1
     xr = 0.7

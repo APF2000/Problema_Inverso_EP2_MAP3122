@@ -94,7 +94,7 @@ def plotArt(t):
 if __name__ == "__main__":
     c2, nx, nt = 10, 100, 350
     T = 1
-    deltaT = 1 / nt
+    deltaT = T / nt
     deltaX = 1 / nx
 
     try:

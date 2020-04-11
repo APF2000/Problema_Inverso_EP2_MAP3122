@@ -46,8 +46,8 @@ def nivelRuido(ni, ti, tf):
     numerador = (lambda t : abs(dr10[int(t * nt)] -  ruido[int(t * nt)]))
     denominador = (lambda t : dr10[int(t * nt)])
 
-    num = ex2.integral(numerador, um, ti, tf, 1 / nt)
-    den = ex2.integral(denominador, um, ti, tf, 1 / nt)
+    num = ex2.integral(numerador, um, ti, tf, T / nt)
+    den = ex2.integral(denominador, um, ti, tf, T / nt)
 
     return 100 * num / den
 
@@ -65,7 +65,8 @@ if __name__ == "__main__":
 
     nt = 1000
     nx = 100
-    deltaT = 1 / nt
+    T = 1
+    deltaT = T / nt
     K = 10
     ti, tf = 0.9, 1.0
 
