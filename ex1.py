@@ -79,11 +79,11 @@ def plotArt(t):
     nome = "Ex1 : c^2 = " + str(c2) + \
                     ", nt = " + str(nt) + \
                     ", nx = " + str(nx) + \
-                    ", t = " + str(t)
+                    ", t = " + str(round(t,1))
     plt.title(nome,fontweight="bold")
     plt.grid(True)
     plt.xlabel("x")
-    plt.ylabel("u(x, " + str(t) + ")")
+    plt.ylabel("u(x, " + str(round(t,1)) + ")")
 
     plt.savefig("ImagensEx1/" + nome + ".jpeg")
     plt.clf()
