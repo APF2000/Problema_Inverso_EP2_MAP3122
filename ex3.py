@@ -7,13 +7,13 @@ import os
 
 # Função que calcula o dr com ruído.
 # Precisa que o dr carregue o arquivo dr10
-def drRuido(ni):
+def drRuido(eta):
     dr10 = np.load("dr10.npy")
     ruido = np.array([])
     v = (lambda t : (2 * np.random.rand() - 1) )
     maximo = max(dr10)
 
-    delta = (lambda t, ni=ni: ni * maximo * v(t))
+    delta = (lambda t, eta=eta: eta * maximo * v(t))
 
     for i in range(len(dr10)):
         ruido = np.append(ruido, (1 + delta(i / nt)) * dr10[i])
@@ -34,13 +34,13 @@ def plotSismogramas(comRuido, semRuido, t):
     plt.xlabel("t")
     plt.plot(t, semRuido)
 
-    plt.savefig("ImagensEx3/ni={:.0e}.jpeg".format(ni))
+    plt.savefig("ImagensEx3/eta={:.0e}.jpeg".format(eta))
 
     plt.clf()
 
-def nivelRuido(ni, ti, tf):
+def nivelRuido(eta, ti, tf):
     um = (lambda t : 1)
-    ruido = drRuido(ni)
+    ruido = drRuido(eta)
     dr10 = np.load("dr10.npy")
 
     numerador = (lambda t : abs(dr10[int(t * nt)] -  ruido[int(t * nt)]))
@@ -51,8 +51,8 @@ def nivelRuido(ni, ti, tf):
 
     return 100 * num / den
 
-def drRuidoLambda(ni):
-    ruido = drRuido(ni)
+def drRuidoLambda(eta):
+    ruido = drRuido(eta)
     return (lambda t : ruido[int(t * nt)])
 
 if __name__ == "__main__":
@@ -71,10 +71,10 @@ if __name__ == "__main__":
     ti, tf = 0.9, 1.0
 
     for j in range(3):
-        ni = 10 ** (- j - 3)
-        print("Para ni = ", ni)
+        eta = 10 ** (- j - 3)
+        print("Para eta = ", eta)
 
-        ruido = (drRuido(ni))
+        ruido = (drRuido(eta))
         t = [ i / nt for i in range(nt + 1) ]
         semRuido = np.load("dr10.npy")
 
@@ -82,7 +82,7 @@ if __name__ == "__main__":
         print("\nO nível de ruído foi")
         print(nivelRuido(1e-3, 0.5, 1))
 
-        ruido = drRuidoLambda(ni)
+        ruido = drRuidoLambda(eta)
 
         xcs = [.03, .15, .17, .25, .33, .34, .40, .44, .51, .73]
         esperado = [7.3, 2.4, 5.7, 4.7, 0.1, 20.0, 5.1, 6.1, 2.8, 15.3]
