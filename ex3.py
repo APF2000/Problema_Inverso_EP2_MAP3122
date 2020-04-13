@@ -20,6 +20,7 @@ def drRuido(eta):
 
     return ruido
 
+# Plota os simogramas com ruído e sem ruído
 def plotSismogramas(comRuido, semRuido, t):
 
     plt.subplot(1, 2, 2)
@@ -38,6 +39,7 @@ def plotSismogramas(comRuido, semRuido, t):
 
     plt.clf()
 
+# Calcula o nível de ruído da função dr distorcida
 def nivelRuido(eta, ti, tf):
     um = (lambda t : 1)
     ruido = drRuido(eta)
@@ -51,6 +53,7 @@ def nivelRuido(eta, ti, tf):
 
     return 100 * num / den
 
+# Retorna a função que contém os valores de dr ruidosos
 def drRuidoLambda(eta):
     ruido = drRuido(eta)
     return (lambda t : ruido[int(t * nt)])
